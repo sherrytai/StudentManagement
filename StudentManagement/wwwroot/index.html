@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8"> 
 	<title>Bootstrap</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdn.staticfile.org/angular.js/1.7.8/angular.min.js"></script>
@@ -31,7 +31,7 @@
 							<td>{{item.age}}</td>
 							<td>{{item.sex}}</td>
 							<td>
-								<a ng-onclick="mainCtrl.del(item.id)">删除</a>
+								<a href="javascript:;" style="text-decoration:none" ng-click="mainCtrl.del(item.id)">删除</a>
 							</td>
 						</tr>
 					</tbody>
@@ -46,21 +46,18 @@
 					<div class="form-group">
 						<input type="search" ng-model="mainCtrl.stuObj.age" class="form-control" placeholder="请输入年龄">
 					</div>
-					<div class="form-group">
-						<input type="search" ng-model="mainCtrl.stuObj.sex" class="form-control" placeholder="请输入性别">
-					</div>
 					<span class="radio" style="display: inline">
 						<label class="radio-inline">
-							<input type="radio" name="sex" value="男">男
+							<input type="radio" name="sex" value="男" ng-model="mainCtrl.stuObj.sex">男
 						</label>
 					</span>
 					<span class="radio" style="display: inline">
 						<label class="radio-inline">
-							<input type="radio" name="sex" value="女">女
+							<input type="radio" name="sex" value="女" ng-model="mainCtrl.stuObj.sex">女
 						</label>
 					</span>
 					<div class="form-group" style="margin-top:15px">
-						<button type="submit" ng-onclick="mainCtrl.add()" class="btn btn-default">添加</button>
+						<button type="submit" ng-click="mainCtrl.add()" class="btn btn-default">添加</button>
 					</div>
 				</form>
 			</div>

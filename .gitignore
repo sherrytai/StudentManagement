@@ -1,4 +1,7 @@
-obj/
+[Oo]bj/
+/obj/
+StudentManagement/obj/
+/StudentManagement/obj/
 *.suo
 *.user
 [Dd]ebug/
