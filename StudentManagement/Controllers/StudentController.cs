@@ -28,7 +28,7 @@ namespace SchoolManagement.Controllers
             return schoolContext.Students.ToList();
         }
 
-        // GET api/values/5
+        // GET api/student/{id}
         [HttpGet("{id}")]
         public Student Get(int id)
         {
@@ -62,13 +62,15 @@ namespace SchoolManagement.Controllers
                 if (x.Id == student.Id)
                     x.Name = student.Name;
             }*/
-            schoolContext.Students.First(x => x.Id == student.Id).Name = student.Name;
+            var studentFromDB = schoolContext.Students.First(x => x.Id == student.Id);
+            studentFromDB.Name = student.Name;
+            studentFromDB.Age = student.Age;
             schoolContext.SaveChanges();
             /*var localStudent = students.First(x => x.Id == student.Id);
             localStudent.Name = student.Name;*/
         }
 
-        // DELETE api/values
+        // DELETE api/student/{id}
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
