@@ -8,6 +8,8 @@ namespace StudentManagement.Models
         public string Name { get; set; }
 
         public int Age { get; set; }
+
+        public string Gender { get; set; }
        
         public Student(int id, string name)
         {
