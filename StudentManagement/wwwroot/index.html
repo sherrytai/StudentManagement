@@ -36,7 +36,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<form role="form" class="col-md-6">
+				<form role="form" class="col-md-6" style="padding:3px;">
 					<div class="form-group">
 						<input type="search" ng-model="stuObj.id" class=" form-control" placeholder="请输入学号">
 					</div>
@@ -90,9 +90,20 @@
         });
 
 		$scope.add = function(){
-			$scope.stuList.push($scope.stuObj);
-			$scope.stuObj = {};
-			alert('添加成功');
+
+			$http({
+	            method : "post",
+	            url : "api/student",
+	            data: $scope.stuObj
+	        }).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+
 		}
 
 		$scope.del = function(id){
