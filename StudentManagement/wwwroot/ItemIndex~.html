@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8"> 
+	<title>ItemManagement</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+
+	<div  ng-controller="MainCtrl" class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<table class="table">
+					<caption>ItemManagement</caption>
+					<thread>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Number</th>
+							<th>Action</th>
+						</tr>
+					</thread>
+					<tbody >
+						<tr ng-repeat="x in itemList">
+							<td>{{x.id}}</td>
+							<td>{{x.name}}</td>
+							<td>{{x.price}}</td>
+							<td>{{x.number}}</td>
+							<td>
+								<a href="javascript:;" style="text-decoration:none" ng-click="del(x.id)">delete</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<form role="form" class="col-md-6" style="padding:3px;">
+					<div class="form-group">
+						<input type="number" ng-model="item.id" class="form-control" placeholder="please input id">
+					</div>
+					<div class="form-group">
+						<input type="search" ng-model="item.name" class="form-control" placeholder="please input name">
+					</div>
+					<div class="form-group">
+						<input type="number" ng-model="item.price" class="form-control" placeholder="please input price">
+					</div>
+					<div class="form-group">
+						<input type="number" ng-model="item.number" class="form-control" placeholder="please input number">
+					</div>
+					<div class="form-group" style="margin-top:15px">
+						<button type="submit" ng-click="add()" class="btn btn-default">Add</button>
+						<button type="submit" ng-click="update()" class="btn btn-default">Update</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<script>
+
+	var app=angular.module("app",[])
+	app.controller("MainCtrl", function($scope, $http){
+
+		$scope.itemList={};
+
+		$scope.getAllData = function() {
+
+			$http({
+	            method : "GET",
+	            url : "api/item"
+	        }).then(function mySuccess(response) {
+
+	            $scope.itemList = response.data;
+	            console.log(response.data);
+
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+		}
+
+		$scope.getAllData();
+
+		$scope.add = function(){
+
+            console.log($scope.item);
+			$http.post("api/item", $scope.item).then(function mySuccess(response) {
+
+	            //console.log(response);
+
+	            $scope.getAllData();
+	        }, function myError(response) {
+
+	            //console.log(response.statusText);
+	        });
+
+			$scope.stuObj = {};
+		}
+
+		$scope.del = function(id){
+
+			var url = "api/item/" + id;
+			console.log(url);
+			$http.delete(url).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        	}, function myError(response) {
+	            
+	            console.log(response.statusText);
+	        });		
+
+		}
+
+		$scope.update = function(){
+
+			console.log($scope.item);
+			$http.put("api/item", $scope.item).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        	}, function myError(response) {
+	            
+	            console.log(response.statusText);
+	        });		
+
+		}
+		
+	});
+
+</script>
+</body>
+</html>

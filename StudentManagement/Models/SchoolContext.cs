@@ -1,4 +1,5 @@
 ﻿using System;
+using ItemManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace StudentManagement.Models
@@ -11,7 +12,8 @@ namespace StudentManagement.Models
         }
 
         public DbSet<Student> Students { get; set; }
-   
+
+        public DbSet<Item> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

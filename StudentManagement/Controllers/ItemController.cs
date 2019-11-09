@@ -5,34 +5,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
 
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SchoolManagement.Controllers
 {
     [Route("api/[controller]")]
-    public class StudentController : Controller
+    public class ItemController : Controller
     {
         //static List<Student> students = new List<Student>();
-        private SchoolContext schoolContext;
+        private SchoolContext itemContext;
 
-        public StudentController(SchoolContext schoolContext)
+        public ItemController(SchoolContext itemContext)
         {
-            this.schoolContext = schoolContext;
-            schoolContext.Database.EnsureCreated();
+            this.itemContext = itemContext;
+            itemContext.Database.EnsureCreated();
         }
 
         // GET: api/values
         [HttpGet]
         public List<Student> Get()
         {
-            return schoolContext.Students.ToList();
+            return itemContext.Students.ToList();
         }
 
         // GET api/student/{id}
         [HttpGet("{id}")]
         public Student Get(int id)
         {
-            foreach (var student in schoolContext.Students)
+            foreach (var student in itemContext.Students)
             {
                 if (student.Id == id)
                     return student;
@@ -45,10 +46,10 @@ namespace SchoolManagement.Controllers
         public int AddStudent([FromBody]Student student)
         {
             //var student = new Student(students.Count, name);
-           
-            
-            schoolContext.Students.Add(student);
-            schoolContext.SaveChanges();
+
+
+            itemContext.Students.Add(student);
+            itemContext.SaveChanges();
             return student.Id;
 
         }
@@ -62,10 +63,10 @@ namespace SchoolManagement.Controllers
                 if (x.Id == student.Id)
                     x.Name = student.Name;
             }*/
-            var studentFromDB = schoolContext.Students.First(x => x.Id == student.Id);
+            var studentFromDB = itemContext.Students.First(x => x.Id == student.Id);
             studentFromDB.Name = student.Name;
             studentFromDB.Age = student.Age;
-            schoolContext.SaveChanges();
+            itemContext.SaveChanges();
             /*var localStudent = students.First(x => x.Id == student.Id);
             localStudent.Name = student.Name;*/
         }
@@ -74,8 +75,8 @@ namespace SchoolManagement.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            schoolContext.Students.Remove(schoolContext.Students.First(x => x.Id == id));
-            schoolContext.SaveChanges();
+            itemContext.Students.Remove(itemContext.Students.First(x => x.Id == id));
+            itemContext.SaveChanges();
         }
     }
 }
