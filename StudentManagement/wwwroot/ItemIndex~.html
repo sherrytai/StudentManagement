@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="app">
 <head>
 	<meta charset="utf-8"> 
-	<title>StudentManagement</title>
+	<title>ItemManagement</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -14,50 +14,43 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<table class="table">
-					<caption>学生管理系统</caption>
+					<caption>ItemManagement</caption>
 					<thread>
 						<tr>
-							<th>学号</th>
-							<th>姓名</th>
-							<th>年龄</th>
-							<th>性别</th>
-							<th>操作</th>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Number</th>
+							<th>Action</th>
 						</tr>
 					</thread>
 					<tbody >
-						<tr ng-repeat="item in stuList">
-							<td>{{item.id}}</td>
-							<td>{{item.name}}</td>
-							<td>{{item.age}}</td>
-							<td>{{item.sex}}</td>
+						<tr ng-repeat="x in itemList">
+							<td>{{x.id}}</td>
+							<td>{{x.name}}</td>
+							<td>{{x.price}}</td>
+							<td>{{x.number}}</td>
 							<td>
-								<a href="javascript:;" style="text-decoration:none" ng-click="del(item.id)">删除</a>
+								<a href="javascript:;" style="text-decoration:none" ng-click="del(x.id)">delete</a>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 				<form role="form" class="col-md-6" style="padding:3px;">
 					<div class="form-group">
-						<input type="number" ng-model="stuObj.id" class="form-control" placeholder="请输入学号">
+						<input type="number" ng-model="item.id" class="form-control" placeholder="please input id">
 					</div>
 					<div class="form-group">
-						<input type="search" ng-model="stuObj.name" class="form-control" placeholder="请输入姓名">
+						<input type="search" ng-model="item.name" class="form-control" placeholder="please input name">
 					</div>
 					<div class="form-group">
-						<input type="number" ng-model="stuObj.age" class="form-control" placeholder="请输入年龄">
+						<input type="number" ng-model="item.price" class="form-control" placeholder="please input price">
 					</div>
-					<span class="radio" style="display: inline">
-						<label class="radio-inline">
-							<input type="radio" name="gender" value="男" ng-model="stuObj.gender">男
-						</label>
-					</span>
-					<span class="radio" style="display: inline">
-						<label class="radio-inline">
-							<input type="radio" name="gender" value="女" ng-model="stuObj.gender">女
-						</label>
-					</span>
+					<div class="form-group">
+						<input type="number" ng-model="item.number" class="form-control" placeholder="please input number">
+					</div>
 					<div class="form-group" style="margin-top:15px">
-						<button type="submit" ng-click="add()" class="btn btn-default">添加</button>
+						<button type="submit" ng-click="add()" class="btn btn-default">Add</button>
 						<button type="submit" ng-click="update()" class="btn btn-default">Update</button>
 					</div>
 				</form>
@@ -67,38 +60,33 @@
 
 <script>
 
-
 	var app=angular.module("app",[])
 	app.controller("MainCtrl", function($scope, $http){
-		$scope.stuObj = {};
-		/*$scope.stuList = [
-				{"id":1, "name":"学生1","age":23, "gender":"男"},
-				{"id":2, "name":"学生2","age":24, "gender":"男"},
-				{"id":3, "name":"学生3","age":23, "gender":"男"}
-		]*/
 
-        $scope.getAllData = function() {
+		$scope.itemList={};
 
-	        $http({
+		$scope.getAllData = function() {
+
+			$http({
 	            method : "GET",
-	            url : "api/student"
+	            url : "api/item"
 	        }).then(function mySuccess(response) {
 
-	            $scope.stuList = response.data;
+	            $scope.itemList = response.data;
 	            console.log(response.data);
 
 	        }, function myError(response) {
 
 	            console.log(response.statusText);
 	        });
-    	}
+		}
 
-        $scope.getAllData();
+		$scope.getAllData();
 
 		$scope.add = function(){
 
-            console.log($scope.stuObj);
-			$http.post("api/student", $scope.stuObj).then(function mySuccess(response) {
+            console.log($scope.item);
+			$http.post("api/item", $scope.item).then(function mySuccess(response) {
 
 	            //console.log(response);
 
@@ -113,7 +101,7 @@
 
 		$scope.del = function(id){
 
-			var url = "api/student/" + id;
+			var url = "api/item/" + id;
 			console.log(url);
 			$http.delete(url).then(function mySuccess(response) {
 
@@ -129,8 +117,8 @@
 
 		$scope.update = function(){
 
-			console.log($scope.stuObj);
-			$http.put("api/student", $scope.stuObj).then(function mySuccess(response) {
+			console.log($scope.item);
+			$http.put("api/item", $scope.item).then(function mySuccess(response) {
 
 	            console.log(response);
 
@@ -141,6 +129,7 @@
 	        });		
 
 		}
+		
 	});
 
 </script>
