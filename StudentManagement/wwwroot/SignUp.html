@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8"> 
+	<title>Sign Up</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+    <div  ng-controller="MainCtrl" class="container">
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+                <form role="form" style="padding:3px;" novalidate>
+                    <h5 style="text-align:center">Sign Up</h5>
+		            <div class="form-group">
+			            <input type="text" ng-model="user.username" class="form-control" placeholder="please input username" required>
+                        <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+                            <span ng-show="myForm.user.$error.required">用户名是必须的。</span>
+                        </span>
+                    </div>
+		            <div class="form-group">
+			            <input type="text" ng-model="user.email" class="form-control" placeholder="please input email" required>
+                        <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+                            <span ng-show="myForm.email.$error.required">邮箱是必须的。</span>
+                            <span ng-show="myForm.email.$error.email">非法的邮箱地址。</span>
+                        </span>
+                    </div>
+		            <div class="form-group">
+			            <input type="text" ng-model="user.password" class="form-control" placeholder="please input password">
+		            </div>
+                    <div class="form-group">
+			            <input type="text" ng-model="user.confirmpassword" class="form-control" placeholder="please confirm password">
+		            </div>
+		            <div class="form-group" style="margin-top:15px">
+			            <button type="submit" ng-click="signUp()" ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid" class="btn btn-default">Sign Up</button>
+		            </div>
+	            </form>
+            </div>
+        </div>
+    </div>
+<script>
+
+
+	var app=angular.module("app",[])
+	app.controller("MainCtrl", function($scope, $http){
+		 /*$scope.stuObj = {};
+
+        $scope.getAllData = function() {
+
+	        $http({
+	            method : "GET",
+	            url : "api/student"
+	        }).then(function mySuccess(response) {
+
+	            $scope.stuList = response.data;
+	            console.log(response.data);
+
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+    	}
+
+        $scope.getAllData();*/
+
+		$scope.signUp = function(){
+
+            console.log($scope.user);
+
+			$http.post("api/accounts", $scope.user).then(function mySuccess(response) {
+
+	            //console.log(response);
+
+	        }, function myError(response) {
+
+	            //console.log(response.statusText);
+	        });
+
+			$scope.user = {};
+		}
+
+		/*$scope.del = function(id){
+
+			var url = "api/student/" + id;
+			console.log(url);
+			$http.delete(url).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        	}, function myError(response) {
+	            
+	            console.log(response.statusText);
+	        });		
+
+		}
+
+		$scope.update = function(){
+
+			console.log($scope.stuObj);
+			$http.put("api/student", $scope.stuObj).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        	}, function myError(response) {
+	            
+	            console.log(response.statusText);
+	        });		
+
+		}
+	});*/
+
+</script>
+</body>
+</html>
