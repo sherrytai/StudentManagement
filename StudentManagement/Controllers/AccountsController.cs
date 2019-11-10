@@ -32,7 +32,8 @@ namespace StudentManagement.Controllers
         [HttpGet("{id}")]
         public AccountResult Get(int id)
         {
-            var account = db.Accounts.FirstOrDefault(x => x.Id == id); // TODO not found
+            var account = GetAccountById(id);
+
             return new AccountResult(account);
         }
 
@@ -40,13 +41,14 @@ namespace StudentManagement.Controllers
         [HttpPost]
         public void Post([FromBody]AccountParameter account)
         {
+            RequiredNotNull(account);
             account.Validate();
 
             var conflictedAccount = db.Accounts.FirstOrDefault(x => x.Name == account.Username || x.Email == account.Email);
             if (conflictedAccount != null)
             {
                 var message = conflictedAccount.Name == account.Username ? "username" : "email";
-                message += "conflicts.";
+                message += " conflicts.";
 
                 throw new ConflictException(message);
             }
@@ -56,15 +58,84 @@ namespace StudentManagement.Controllers
         }
 
         // PUT api/<controller>/5
-        /*[HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody]AccountParameter account)
         {
+            RequiredNotNull(account);
+            var localAccount = GetAccountById(id);
+            var hasModified = false;
+            if (!string.IsNullOrWhiteSpace(account.Username) && account.Username != localAccount.Name)
+            {
+                account.ValidateUsername();
+                if (ContainsByUsername(account.Username))
+                {
+                    throw new ConflictException("username conflicts.");
+                }
+
+                localAccount.Name = account.Username;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(account.Email) && account.Email != localAccount.Email)
+            {
+                account.ValidateEmail();
+                if (ContainsByEmail(account.Email))
+                {
+                    throw new ConflictException("username conflicts.");
+                }
+
+                localAccount.Email = account.Email;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(account.Password) && account.Password != localAccount.Password)
+            {
+                account.ValidatePassword();
+
+                localAccount.Password = account.GetCryptedPassword();
+                hasModified = true;
+            }
+
+            if (!hasModified)
+            {
+                throw new InvalidParameterException("Can't find valid change.");
+            }
+
+            db.SaveChanges();
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }*/
+            var account = GetAccountById(id);
+            db.Accounts.Remove(account);
+            db.SaveChanges();
+        }
+
+        private Account GetAccountById(int id)
+        {
+            var account = db.Accounts.FirstOrDefault(x => x.Id == id);
+            if (account == null)
+            {
+                throw new NotFoundException($"Can't find account {id}.");
+            }
+
+            return account;
+        }
+
+        private bool ContainsByUsername(string username)
+        {
+            RequiredNotNull(username);
+            var account = db.Accounts.FirstOrDefault(x => x.Name == username);
+            return account != null;
+        }
+
+        private bool ContainsByEmail(string email)
+        {
+            RequiredNotNull(email);
+            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
+            return account != null;
+        }
     }
 }
