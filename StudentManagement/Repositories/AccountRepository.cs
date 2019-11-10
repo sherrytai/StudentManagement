@@ -35,6 +35,51 @@ namespace StudentManagement.Repositories
             return account.Entity;
         }
 
+        public void Update(int id, AccountParameter accountParameter)
+        {
+            Validator.RequiredNotNull(accountParameter);
+            var localAccount = GetAccountById(id);
+            var hasModified = false;
+            if (!string.IsNullOrWhiteSpace(accountParameter.Username) && accountParameter.Username != localAccount.Name)
+            {
+                accountParameter.ValidateUsername();
+                if (ContainsByUsername(accountParameter.Username))
+                {
+                    throw new ConflictException("username conflicts.");
+                }
+
+                localAccount.Name = accountParameter.Username;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(accountParameter.Email) && accountParameter.Email != localAccount.Email)
+            {
+                accountParameter.ValidateEmail();
+                if (ContainsByEmail(accountParameter.Email))
+                {
+                    throw new ConflictException("username conflicts.");
+                }
+
+                localAccount.Email = accountParameter.Email;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(accountParameter.Password) && accountParameter.Password != localAccount.Password)
+            {
+                accountParameter.ValidatePassword();
+
+                localAccount.Password = accountParameter.GetCryptedPassword();
+                hasModified = true;
+            }
+
+            if (!hasModified)
+            {
+                throw new InvalidParameterException("Can't find valid change.");
+            }
+
+            db.SaveChanges();
+        }
+
         public bool ContainsByUsername(string username)
         {
             Validator.RequiredNotNull(username);
@@ -44,14 +89,26 @@ namespace StudentManagement.Repositories
 
         public bool ContainsByEmail(string email)
         {
-            Validator.RequiredNotNull(email);
+            Validator.ValidateString(nameof(email), email);
             var account = db.Accounts.FirstOrDefault(x => x.Email == email);
             return account != null;
         }
 
+        public Account GetAccountByUsername(string username)
+        {
+            Validator.ValidateString(nameof(username), username);
+            var account = db.Accounts.FirstOrDefault(x => x.Name == username);
+            if (account == null)
+            {
+                throw new NotFoundException($"Can't find account {username}.");
+            }
+
+            return account;
+        }
+
         public Account GetAccountByEmail(string email)
         {
-            Validator.RequiredNotNull(email);
+            Validator.ValidateString(nameof(email), email);
             var account = db.Accounts.FirstOrDefault(x => x.Email == email);
             if (account == null)
             {

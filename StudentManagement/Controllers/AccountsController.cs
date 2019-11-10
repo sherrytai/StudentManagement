@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Parameters;
-using StudentManagement.Models;
-using StudentManagement.Exceptions;
 using StudentManagement.Results;
 using StudentManagement.Repositories;
 using StudentManagement.Utils;
+using StudentManagement.Models;
+using StudentManagement.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,14 +16,10 @@ namespace StudentManagement.Controllers
     public class AccountsController : BaseController
     {
         private AccountRepository accountRepository;
-        private SchoolContext db;
 
-        public AccountsController(
-                    AccountRepository accountRepository,
-                    SchoolContext schoolContext)
+        public AccountsController(AccountRepository accountRepository)
         {
             this.accountRepository = accountRepository;
-            this.db = schoolContext;
         }
 
         // TODO need Admin permission
@@ -52,7 +46,7 @@ namespace StudentManagement.Controllers
         {
             var account = accountRepository.Add(accountParameter);
 
-            var accountResult = new AccountResult(accountRepository.GetAccountByEmail(account.Email));
+            var accountResult = new AccountResult(account);
             return new CreatedResult($"api/accounts/{accountResult.Id}", accountResult);
         }
 
@@ -60,47 +54,7 @@ namespace StudentManagement.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]AccountParameter account)
         {
-            Validator.RequiredNotNull(account);
-            var localAccount = accountRepository.GetAccountById(id);
-            var hasModified = false;
-            if (!string.IsNullOrWhiteSpace(account.Username) && account.Username != localAccount.Name)
-            {
-                account.ValidateUsername();
-                if (accountRepository.ContainsByUsername(account.Username))
-                {
-                    throw new ConflictException("username conflicts.");
-                }
-
-                localAccount.Name = account.Username;
-                hasModified = true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(account.Email) && account.Email != localAccount.Email)
-            {
-                account.ValidateEmail();
-                if (accountRepository.ContainsByEmail(account.Email))
-                {
-                    throw new ConflictException("username conflicts.");
-                }
-
-                localAccount.Email = account.Email;
-                hasModified = true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(account.Password) && account.Password != localAccount.Password)
-            {
-                account.ValidatePassword();
-
-                localAccount.Password = account.GetCryptedPassword();
-                hasModified = true;
-            }
-
-            if (!hasModified)
-            {
-                throw new InvalidParameterException("Can't find valid change.");
-            }
-
-            db.SaveChanges();
+            accountRepository.Update(id, account);
         }
 
         // DELETE api/<controller>/5
@@ -110,6 +64,30 @@ namespace StudentManagement.Controllers
             accountRepository.Delete(id);
         }
 
-       
+        [HttpPost("login")]
+        public void Login([FromBody]AccountParameter accountParameter)
+        {
+            Validator.RequiredNotNull(accountParameter);
+            Account account = null;
+            if (!string.IsNullOrWhiteSpace(accountParameter.Email))
+            {
+                account = accountRepository.GetAccountByEmail(accountParameter.Email);
+            }
+            else if (!string.IsNullOrWhiteSpace(accountParameter.Username))
+            {
+                account = accountRepository.GetAccountByUsername(accountParameter.Username);
+            }
+
+            if (account == null)
+            {
+                throw new InvalidParameterException("Invalid username or email.");
+            }
+
+            accountParameter.ValidatePassword();
+            if (accountParameter.GetCryptedPassword() != account.Password)
+            {
+                throw new InvalidParameterException("Wrong password.");
+            }
+        }
     }
 }
