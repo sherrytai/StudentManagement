@@ -64,11 +64,11 @@ namespace StudentManagement.Repositories
                 hasModified = true;
             }
 
-            if (!string.IsNullOrWhiteSpace(accountParameter.Password) && accountParameter.Password != localAccount.Password)
+            if (!string.IsNullOrWhiteSpace(accountParameter.Password) && accountParameter.Password != localAccount.CryptedPassword)
             {
                 accountParameter.ValidatePassword();
 
-                localAccount.Password = accountParameter.GetCryptedPassword();
+                localAccount.CryptedPassword = accountParameter.GetCryptedPassword();
                 hasModified = true;
             }
 
@@ -77,7 +77,7 @@ namespace StudentManagement.Repositories
                 throw new InvalidParameterException("Can't find valid change.");
             }
 
-            db.SaveChanges();
+            db.SaveChanges(); // TODO what if conflicts in db?
         }
 
         public bool ContainsByUsername(string username)

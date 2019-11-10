@@ -88,7 +88,7 @@ namespace StudentManagement.Controllers
             }
 
             accountParameter.ValidatePassword();
-            if (accountParameter.GetCryptedPassword() != account.Password)
+            if (accountParameter.GetCryptedPassword() != account.CryptedPassword)
             {
                 throw new InvalidParameterException("Wrong password.");
             }

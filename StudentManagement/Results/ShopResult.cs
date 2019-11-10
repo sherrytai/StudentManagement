@@ -20,6 +20,9 @@ namespace StudentManagement.Results
         [JsonProperty(PropertyName = "status", Order = 4)]
         public ShopStatus Status { get; set; } = ShopStatus.Draft;
 
+        [JsonProperty(PropertyName = "accountId", Order = 5)]
+        public int AccountId { get; set; }
+
         public ShopResult()
         { }
 
@@ -30,6 +33,7 @@ namespace StudentManagement.Results
             Description = shop.Description;
             Category = shop.Category;
             Status = shop.Status;
+            AccountId = shop.AccountId;
         }
     }
 }

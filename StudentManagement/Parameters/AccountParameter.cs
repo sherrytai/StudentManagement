@@ -25,7 +25,7 @@ namespace StudentManagement.Parameters
 
         public void ValidateUsername()
         {
-            Validator.ValidateString("username", Username);
+            Validator.ValidateString("username", Username); // TODO validate the max length
         }
 
         public void ValidateEmail()

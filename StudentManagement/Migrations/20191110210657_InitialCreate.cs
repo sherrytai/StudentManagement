@@ -2,7 +2,7 @@
 
 namespace StudentManagement.Migrations
 {
-    public partial class AccountShopProduct : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,9 +12,9 @@ namespace StudentManagement.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Email = table.Column<string>(maxLength: 128, nullable: false),
+                    CryptedPassword = table.Column<string>(maxLength: 128, nullable: false),
                     IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -38,16 +38,31 @@ namespace StudentManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shops",
+                name: "Student",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Category = table.Column<string>(nullable: true),
+                    Age = table.Column<int>(nullable: false),
+                    Gender = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Student", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shops",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false),
+                    Category = table.Column<string>(maxLength: 128, nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    AccountId = table.Column<int>(nullable: true)
+                    AccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,7 +72,7 @@ namespace StudentManagement.Migrations
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,12 +81,12 @@ namespace StudentManagement.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    Description = table.Column<string>(maxLength: 256, nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Amount = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    ShopId = table.Column<int>(nullable: true)
+                    ShopId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,8 +96,31 @@ namespace StudentManagement.Migrations
                         column: x => x.ShopId,
                         principalTable: "Shops",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_Email",
+                table: "Accounts",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_Name",
+                table: "Accounts",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Description",
+                table: "Products",
+                column: "Description");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Name",
+                table: "Products",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ShopId",
@@ -93,6 +131,22 @@ namespace StudentManagement.Migrations
                 name: "IX_Shops_AccountId",
                 table: "Shops",
                 column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shops_Category",
+                table: "Shops",
+                column: "Category");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shops_Description",
+                table: "Shops",
+                column: "Description");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shops_Name",
+                table: "Shops",
+                column: "Name",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -102,6 +156,9 @@ namespace StudentManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Student");
 
             migrationBuilder.DropTable(
                 name: "Shops");

@@ -33,10 +33,12 @@ namespace StudentManagement
 
             //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddDbContext<SchoolContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("SchoolContext")), ServiceLifetime.Singleton);
-            services.AddSingleton<AccountRepository>();
-            services.AddSingleton<ShopRepository>();
-            services.AddSingleton<Repositories.Repositories>();
+                    options
+                        .UseLazyLoadingProxies() // Lazy load https://docs.microsoft.com/en-us/ef/core/querying/related-data
+                        .UseSqlite(Configuration.GetConnectionString("SchoolContext"))); //dbContext is not thread-safe, https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<ShopRepository>();
+            services.AddScoped<Repositories.Repositories>();
 
             // According to https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.0&tabs=visual-studio
             // Register the Swagger generator, defining 1 or more Swagger documents
