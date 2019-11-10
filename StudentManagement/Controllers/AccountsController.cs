@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Parameters;
 using StudentManagement.Results;
-using StudentManagement.Repositories;
 using StudentManagement.Utils;
 using StudentManagement.Models;
 using StudentManagement.Exceptions;
@@ -12,7 +11,7 @@ using StudentManagement.Exceptions;
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/v0/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AccountsController : BaseController
     {
         public AccountsController(Repositories.Repositories repositories) : base(repositories)
@@ -52,7 +51,7 @@ namespace StudentManagement.Controllers
             var account = accountRepository.Add(accountParameter);
 
             var accountResult = new AccountResult(account);
-            return new CreatedResult($"api/v0/accounts/{accountResult.Id}", accountResult);
+            return new CreatedResult($"api/v1/accounts/{accountResult.Id}", accountResult);
         }
 
         // PUT api/<controller>/5
@@ -70,7 +69,7 @@ namespace StudentManagement.Controllers
         }
 
         [HttpPost("login")]
-        public void Login([FromBody]AccountParameter accountParameter)
+        public AccountResult Login([FromBody]AccountParameter accountParameter)
         {
             Validator.RequiredNotNull(accountParameter);
             Account account = null;
@@ -93,6 +92,8 @@ namespace StudentManagement.Controllers
             {
                 throw new InvalidParameterException("Wrong password.");
             }
+
+            return new AccountResult(account);
         }
     }
 }

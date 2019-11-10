@@ -1,8 +1,5 @@
-﻿using StudentManagement.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentManagement.Parameters;
 
 namespace StudentManagement.Models
 {
@@ -18,7 +15,7 @@ namespace StudentManagement.Models
 
         public bool IsAdmin { get; set; }
 
-        public List<Shop> Shops { get; set; }
+        public DbSet<Shop> Shops { get; set; }
 
         public Account()
         { }

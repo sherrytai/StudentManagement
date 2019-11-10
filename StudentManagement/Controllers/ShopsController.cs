@@ -9,7 +9,7 @@ using StudentManagement.Results;
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/v0/[controller]")]
+    [Route("api/v1/[controller]")]
     public class ShopsController : BaseController
     {
         public ShopsController(Repositories.Repositories repositories) : base(repositories)
@@ -35,7 +35,7 @@ namespace StudentManagement.Controllers
         public IActionResult Post([FromBody]ShopParameter shopParameter)
         {
             var shop = shopRepository.Add(shopParameter);
-            return Created($"api/v0/shops/{shop.Id}", new ShopResult(shop));
+            return Created($"api/v1/shops/{shop.Id}", new ShopResult(shop));
         }
 
         // PUT api/<controller>/5

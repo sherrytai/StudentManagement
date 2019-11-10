@@ -83,15 +83,13 @@ namespace StudentManagement.Repositories
         public bool ContainsByUsername(string username)
         {
             Validator.RequiredNotNull(username);
-            var account = db.Accounts.FirstOrDefault(x => x.Name == username);
-            return account != null;
+            return db.Accounts.Any(x => x.Name == username);
         }
 
         public bool ContainsByEmail(string email)
         {
             Validator.ValidateString(nameof(email), email);
-            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
-            return account != null;
+            return db.Accounts.Any(x => x.Email == email);
         }
 
         public Account GetAccountByUsername(string username)
@@ -141,7 +139,7 @@ namespace StudentManagement.Repositories
         {
             Validator.ValidateOffsetAndLimit(offset, limit);
             var account = GetAccountById(accountId);
-            var size = account.Shops.Count;
+            var size = account.Shops.Count();
             Validator.ValidateOffsetAndLimitWithSize(offset, limit, size);
 
             return account.Shops.Skip(offset).Take(limit);
