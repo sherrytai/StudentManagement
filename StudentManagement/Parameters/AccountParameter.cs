@@ -7,13 +7,13 @@ namespace StudentManagement.Parameters
 {
     public class AccountParameter
     {
-        [JsonProperty("username", Order = 0)]
+        [JsonProperty(PropertyName = "username", Order = 0)]
         public string Username { get; set; }
 
-        [JsonProperty("email", Order = 1)]
+        [JsonProperty(PropertyName = "email", Order = 1)]
         public string Email { get; set; }
 
-        [JsonProperty("password", Order = 2)]
+        [JsonProperty(PropertyName = "password", Order = 2)]
         public string Password { get; set; }
 
         public void Validate()

@@ -39,7 +39,7 @@ namespace StudentManagement.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]AccountParameter account)
+        public IActionResult Post([FromBody]AccountParameter account)
         {
             RequiredNotNull(account);
             account.Validate();
@@ -55,6 +55,9 @@ namespace StudentManagement.Controllers
 
             db.Accounts.Add(new Account(account));
             db.SaveChanges();
+
+            var accountResult = new AccountResult(GetAccountByEmail(account.Email));
+            return new CreatedResult($"api/accounts/{accountResult.Id}", accountResult);
         }
 
         // PUT api/<controller>/5
@@ -136,6 +139,18 @@ namespace StudentManagement.Controllers
             RequiredNotNull(email);
             var account = db.Accounts.FirstOrDefault(x => x.Email == email);
             return account != null;
+        }
+
+        private Account GetAccountByEmail(string email)
+        {
+            RequiredNotNull(email);
+            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
+            if (account == null)
+            {
+                throw new NotFoundException($"Can't find account {email}.");
+            }
+
+            return account;
         }
     }
 }
