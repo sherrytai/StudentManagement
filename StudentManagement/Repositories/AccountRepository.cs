@@ -77,7 +77,7 @@ namespace StudentManagement.Repositories
                 throw new InvalidParameterException("Can't find valid change.");
             }
 
-            db.SaveChanges();
+            db.SaveChanges(); // TODO what if conflicts in db?
         }
 
         public bool ContainsByUsername(string username)
