@@ -27,26 +27,17 @@ namespace StudentManagement.Models
         [Required]
         public bool IsAdmin { get; set; }
 
-        public List<Shop> Shops { get; set; }
+        public virtual ICollection<Shop> Shops { get; set; }
 
         public Account()
         {
-            if (Shops == null)
-            {
-                Shops = new List<Shop>();
-            }
         }
 
-        public Account(AccountParameter account)
+        public Account(AccountParameter account) : this()
         {
             Name = account.Username;
             Email = account.Email;
             CryptedPassword = account.GetCryptedPassword();
-
-            if (Shops == null)
-            {
-                Shops = new List<Shop>();
-            }
         }
     }
 }

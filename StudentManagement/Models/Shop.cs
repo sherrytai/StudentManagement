@@ -27,17 +27,18 @@ namespace StudentManagement.Models
         [Required]
         public ShopStatus Status { get; set; }
 
-        public List<Product> Products { get; set; } = new List<Product>();
+        public virtual ICollection<Product> Products { get; set; }
 
         public int AccountId { get; set; }
 
         [ForeignKey("AccountId")]
-        public Account Account { get; set; }
+        public virtual Account Account { get; set; }
 
         public Shop()
-        { }
+        {
+        }
 
-        public Shop(ShopParameter shopParameter)
+        public Shop(ShopParameter shopParameter) : this()
         {
             Name = shopParameter.Name;
             Description = shopParameter.Description;

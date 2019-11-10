@@ -33,7 +33,9 @@ namespace StudentManagement
 
             //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddDbContext<SchoolContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("SchoolContext"))); //dbContext is not thread-safe, https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
+                    options
+                        .UseLazyLoadingProxies() // Lazy load https://docs.microsoft.com/en-us/ef/core/querying/related-data
+                        .UseSqlite(Configuration.GetConnectionString("SchoolContext"))); //dbContext is not thread-safe, https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
             services.AddScoped<AccountRepository>();
             services.AddScoped<ShopRepository>();
             services.AddScoped<Repositories.Repositories>();

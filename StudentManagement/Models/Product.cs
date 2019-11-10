@@ -32,6 +32,6 @@ namespace StudentManagement.Models
         public int ShopId { get; set; }
 
         [ForeignKey("ShopId")]
-        public Shop Shop { get; set; }
+        public virtual Shop Shop { get; set; }
     }
 }
