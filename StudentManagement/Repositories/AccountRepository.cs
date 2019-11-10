@@ -132,7 +132,8 @@ namespace StudentManagement.Repositories
         public IEnumerable<Account> GetAccounts(int offset, int limit)
         {
             Validator.ValidateOffsetAndLimit(offset, limit);
-
+            var size = db.Accounts.Count();
+            Validator.ValidateOffsetAndLimitWithSize(offset, limit, size);
             return db.Accounts.Skip(offset).Take(limit);
         }
 

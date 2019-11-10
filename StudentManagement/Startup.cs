@@ -35,6 +35,7 @@ namespace StudentManagement
             services.AddDbContext<SchoolContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("SchoolContext")), ServiceLifetime.Singleton);
             services.AddSingleton<AccountRepository>();
+            services.AddSingleton<ShopRepository>();
             services.AddSingleton<Repositories.Repositories>();
 
             // According to https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.0&tabs=visual-studio

@@ -1,53 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using StudentManagement.Models;
 using StudentManagement.Parameters;
+using StudentManagement.Repositories;
+using StudentManagement.Results;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/v0/accounts/{accountId}/[controller]")]
+    [Route("api/v0/[controller]")]
     public class ShopsController : BaseController
     {
-        public ShopsController(SchoolContext schoolContext)
+        private ShopRepository shopRepository;
+
+        public ShopsController(ShopRepository shopRepository)
         {
+            this.shopRepository = shopRepository;
         }
 
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ShopResult> Get(int offset = 0, int limit = 10)
         {
-            return new string[] { "value1", "value2" };
+            return shopRepository.GetShops(offset, limit).Select(x => new ShopResult(x));
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ShopResult Get(int id)
         {
-            return "value";
+            return new ShopResult(shopRepository.GetShopById(id));
         }
 
         // POST api/<controller>
         [HttpPost]
         public IActionResult Post([FromBody]ShopParameter shopParameter)
         {
-            return NotFound();
+            var shop = shopRepository.Add(shopParameter);
+            return Created($"api/v0/shops/{shop.Id}", new ShopResult(shop));
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]ShopParameter shopParameter)
         {
+            // TODO
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            shopRepository.Delete(id);
         }
     }
 }

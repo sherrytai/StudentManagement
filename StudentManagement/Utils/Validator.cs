@@ -10,6 +10,14 @@ namespace StudentManagement.Utils
     {
         private const int MaxLimit = 200;
 
+        public static void ValidateId(string parameterName, int parameterValue)
+        {
+            if (parameterValue <= 0)
+            {
+                throw new InvalidParameterException($"Invalid id {parameterName} .");
+            }
+        }
+
         public static void RequiredNotNull(object parameter)
         {
             if (parameter == null)
@@ -40,7 +48,15 @@ namespace StudentManagement.Utils
 
             if (limit > MaxLimit)
             {
-                throw new InvalidParameterException($"{nameof(limit)} out of range.");
+                throw new InvalidParameterException($"{nameof(limit)} extends max limit.");
+            }
+        }
+
+        public static void ValidateOffsetAndLimitWithSize(int offset, int limit, int size)
+        {
+            if (offset >= size)
+            {
+                throw new InvalidParameterException($"{nameof(offset)} is out of range.");
             }
         }
     }
