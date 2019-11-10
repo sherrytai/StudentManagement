@@ -51,7 +51,7 @@ namespace StudentManagement.Controllers
             var account = accountRepository.Add(accountParameter);
 
             var accountResult = new AccountResult(account);
-            return new CreatedResult($"api/v1/accounts/{accountResult.Id}", accountResult);
+            return Created($"api/v1/accounts/{accountResult.Id}", accountResult);
         }
 
         // PUT api/<controller>/5
