@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Models;
+using StudentManagement.Parameters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/accounts/{accountId}/[controller]")]
     public class ShopsController : BaseController
     {
-        public ShopsController(SchoolContext schoolContext) : base(schoolContext)
+        public ShopsController(SchoolContext schoolContext)
         {
         }
 
@@ -32,8 +33,9 @@ namespace StudentManagement.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]ShopParameter shopParameter)
         {
+            return NotFound();
         }
 
         // PUT api/<controller>/5

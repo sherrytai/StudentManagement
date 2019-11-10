@@ -7,24 +7,33 @@ using StudentManagement.Parameters;
 using StudentManagement.Models;
 using StudentManagement.Exceptions;
 using StudentManagement.Results;
+using StudentManagement.Repositories;
+using StudentManagement.Utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v0/[controller]")]
     public class AccountsController : BaseController
     {
-        public AccountsController(SchoolContext schoolContext) : base(schoolContext)
+        private AccountRepository accountRepository;
+        private SchoolContext db;
+
+        public AccountsController(
+                    AccountRepository accountRepository,
+                    SchoolContext schoolContext)
         {
+            this.accountRepository = accountRepository;
+            this.db = schoolContext;
         }
 
         // TODO need Admin permission
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<AccountResult> Get()
+        public IEnumerable<AccountResult> Get(int offset = 0, int limit = 10)
         {
-            return db.Accounts.Select(x => new AccountResult(x));
+            return accountRepository.GetAccounts(offset, limit).Select(x => new AccountResult(x));
         }
 
         // TODO check permission
@@ -32,31 +41,18 @@ namespace StudentManagement.Controllers
         [HttpGet("{id}")]
         public AccountResult Get(int id)
         {
-            var account = GetAccountById(id);
+            var account = accountRepository.GetAccountById(id);
 
             return new AccountResult(account);
         }
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]AccountParameter account)
+        public IActionResult Post([FromBody]AccountParameter accountParameter)
         {
-            RequiredNotNull(account);
-            account.Validate();
+            var account = accountRepository.Add(accountParameter);
 
-            var conflictedAccount = db.Accounts.FirstOrDefault(x => x.Name == account.Username || x.Email == account.Email);
-            if (conflictedAccount != null)
-            {
-                var message = conflictedAccount.Name == account.Username ? "username" : "email";
-                message += " conflicts.";
-
-                throw new ConflictException(message);
-            }
-
-            db.Accounts.Add(new Account(account));
-            db.SaveChanges();
-
-            var accountResult = new AccountResult(GetAccountByEmail(account.Email));
+            var accountResult = new AccountResult(accountRepository.GetAccountByEmail(account.Email));
             return new CreatedResult($"api/accounts/{accountResult.Id}", accountResult);
         }
 
@@ -64,13 +60,13 @@ namespace StudentManagement.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]AccountParameter account)
         {
-            RequiredNotNull(account);
-            var localAccount = GetAccountById(id);
+            Validator.RequiredNotNull(account);
+            var localAccount = accountRepository.GetAccountById(id);
             var hasModified = false;
             if (!string.IsNullOrWhiteSpace(account.Username) && account.Username != localAccount.Name)
             {
                 account.ValidateUsername();
-                if (ContainsByUsername(account.Username))
+                if (accountRepository.ContainsByUsername(account.Username))
                 {
                     throw new ConflictException("username conflicts.");
                 }
@@ -82,7 +78,7 @@ namespace StudentManagement.Controllers
             if (!string.IsNullOrWhiteSpace(account.Email) && account.Email != localAccount.Email)
             {
                 account.ValidateEmail();
-                if (ContainsByEmail(account.Email))
+                if (accountRepository.ContainsByEmail(account.Email))
                 {
                     throw new ConflictException("username conflicts.");
                 }
@@ -111,46 +107,9 @@ namespace StudentManagement.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var account = GetAccountById(id);
-            db.Accounts.Remove(account);
-            db.SaveChanges();
+            accountRepository.Delete(id);
         }
 
-        private Account GetAccountById(int id)
-        {
-            var account = db.Accounts.FirstOrDefault(x => x.Id == id);
-            if (account == null)
-            {
-                throw new NotFoundException($"Can't find account {id}.");
-            }
-
-            return account;
-        }
-
-        private bool ContainsByUsername(string username)
-        {
-            RequiredNotNull(username);
-            var account = db.Accounts.FirstOrDefault(x => x.Name == username);
-            return account != null;
-        }
-
-        private bool ContainsByEmail(string email)
-        {
-            RequiredNotNull(email);
-            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
-            return account != null;
-        }
-
-        private Account GetAccountByEmail(string email)
-        {
-            RequiredNotNull(email);
-            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
-            if (account == null)
-            {
-                throw new NotFoundException($"Can't find account {email}.");
-            }
-
-            return account;
-        }
+       
     }
 }

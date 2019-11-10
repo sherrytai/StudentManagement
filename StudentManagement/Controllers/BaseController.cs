@@ -9,20 +9,5 @@ namespace StudentManagement.Controllers
     [Route("api/[controller]")]
     public class BaseController : Controller
     {
-        protected SchoolContext db;
-
-        public BaseController(SchoolContext schoolContext)
-        {
-            db = schoolContext;
-            db.Database.EnsureCreated();
-        }
-
-        protected void RequiredNotNull(object parameter)
-        {
-            if (parameter == null)
-            {
-                throw new InvalidParameterException("Found null parameter.");
-            }
-        }
     }
 }

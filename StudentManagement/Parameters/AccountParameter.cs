@@ -25,26 +25,17 @@ namespace StudentManagement.Parameters
 
         public void ValidateUsername()
         {
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                throw new InvalidParameterException("Invalid username.");
-            }
+            Validator.ValidateString("username", Username);
         }
 
         public void ValidateEmail()
         {
-            if (string.IsNullOrWhiteSpace(Email) || !IsValidEmail(Email))
-            {
-                throw new InvalidParameterException("Invalid email.");
-            }
+            Validator.ValidateString("email", Email);
         }
 
         public void ValidatePassword()
         {
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                throw new InvalidParameterException("Invalid password.");
-            }
+            Validator.ValidateString("password", Password);
 
             if (Password.Length < 6)
             {

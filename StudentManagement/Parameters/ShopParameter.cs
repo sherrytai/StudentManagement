@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StudentManagement.Models;
+using StudentManagement.Utils;
 
 namespace StudentManagement.Parameters
 {
@@ -17,5 +18,27 @@ namespace StudentManagement.Parameters
 
         [JsonProperty(PropertyName = "status", Order = 3)]
         public ShopStatus Status { get; set; } = ShopStatus.Draft;
+
+        public void Validate()
+        {
+            ValidateName();
+            ValidateDescription();
+            ValidateCategory();
+        }
+
+        public void ValidateName()
+        {
+            Validator.ValidateString("name", Name);
+        }
+
+        public void ValidateDescription()
+        {
+            Validator.ValidateString("description", Description);
+        }
+
+        public void ValidateCategory()
+        {
+            Validator.ValidateString("category", Category);
+        }
     }
 }
