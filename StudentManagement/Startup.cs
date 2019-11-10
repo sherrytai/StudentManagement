@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StudentManagement.ExceptionFilters;
 using StudentManagement.Models;
+using StudentManagement.Repositories;
+using StudentManagement.Utils;
 
 namespace StudentManagement
 {
@@ -29,8 +31,12 @@ namespace StudentManagement
                     config.Filters.Add(typeof(DefaultExceptionFilter));
                 });
 
+            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddDbContext<SchoolContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("SchoolContext")));
+                    options.UseSqlite(Configuration.GetConnectionString("SchoolContext")), ServiceLifetime.Singleton);
+            services.AddSingleton<AccountRepository>();
+            services.AddSingleton<ShopRepository>();
+            services.AddSingleton<Repositories.Repositories>();
 
             // According to https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.0&tabs=visual-studio
             // Register the Swagger generator, defining 1 or more Swagger documents

@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Parameters;
+using StudentManagement.Results;
+using StudentManagement.Utils;
 using StudentManagement.Models;
 using StudentManagement.Exceptions;
-using StudentManagement.Results;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace StudentManagement.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AccountsController : BaseController
     {
-        public AccountsController(SchoolContext schoolContext) : base(schoolContext)
+        public AccountsController(Repositories.Repositories repositories) : base(repositories)
         {
         }
 
         // TODO need Admin permission
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<AccountResult> Get()
+        public IEnumerable<AccountResult> Get(int offset = 0, int limit = 10)
         {
-            return db.Accounts.Select(x => new AccountResult(x));
+            return accountRepository.GetAccounts(offset, limit).Select(x => new AccountResult(x));
         }
 
         // TODO check permission
@@ -32,110 +31,69 @@ namespace StudentManagement.Controllers
         [HttpGet("{id}")]
         public AccountResult Get(int id)
         {
-            var account = GetAccountById(id);
+            var account = accountRepository.GetAccountById(id);
 
             return new AccountResult(account);
         }
 
+        [HttpGet("{accountId}/shops")]
+        public IEnumerable<ShopResult> GetAccountShops(int accountId, int offset = 0, int limit = 10)
+        {
+            var shops = accountRepository.GetAccountShops(accountId, offset, limit);
+
+            return shops.Select(x => new ShopResult(x));
+        }
+
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]AccountParameter account)
+        public IActionResult Post([FromBody]AccountParameter accountParameter)
         {
-            RequiredNotNull(account);
-            account.Validate();
+            var account = accountRepository.Add(accountParameter);
 
-            var conflictedAccount = db.Accounts.FirstOrDefault(x => x.Name == account.Username || x.Email == account.Email);
-            if (conflictedAccount != null)
-            {
-                var message = conflictedAccount.Name == account.Username ? "username" : "email";
-                message += " conflicts.";
-
-                throw new ConflictException(message);
-            }
-
-            db.Accounts.Add(new Account(account));
-            db.SaveChanges();
+            var accountResult = new AccountResult(account);
+            return Created($"api/v1/accounts/{accountResult.Id}", accountResult);
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]AccountParameter account)
         {
-            RequiredNotNull(account);
-            var localAccount = GetAccountById(id);
-            var hasModified = false;
-            if (!string.IsNullOrWhiteSpace(account.Username) && account.Username != localAccount.Name)
-            {
-                account.ValidateUsername();
-                if (ContainsByUsername(account.Username))
-                {
-                    throw new ConflictException("username conflicts.");
-                }
-
-                localAccount.Name = account.Username;
-                hasModified = true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(account.Email) && account.Email != localAccount.Email)
-            {
-                account.ValidateEmail();
-                if (ContainsByEmail(account.Email))
-                {
-                    throw new ConflictException("username conflicts.");
-                }
-
-                localAccount.Email = account.Email;
-                hasModified = true;
-            }
-
-            if (!string.IsNullOrWhiteSpace(account.Password) && account.Password != localAccount.Password)
-            {
-                account.ValidatePassword();
-
-                localAccount.Password = account.GetCryptedPassword();
-                hasModified = true;
-            }
-
-            if (!hasModified)
-            {
-                throw new InvalidParameterException("Can't find valid change.");
-            }
-
-            db.SaveChanges();
+            accountRepository.Update(id, account);
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var account = GetAccountById(id);
-            db.Accounts.Remove(account);
-            db.SaveChanges();
+            accountRepository.Delete(id);
         }
 
-        private Account GetAccountById(int id)
+        [HttpPost("login")]
+        public AccountResult Login([FromBody]AccountParameter accountParameter)
         {
-            var account = db.Accounts.FirstOrDefault(x => x.Id == id);
-            if (account == null)
+            Validator.RequiredNotNull(accountParameter);
+            Account account = null;
+            if (!string.IsNullOrWhiteSpace(accountParameter.Email))
             {
-                throw new NotFoundException($"Can't find account {id}.");
+                account = accountRepository.GetAccountByEmail(accountParameter.Email);
+            }
+            else if (!string.IsNullOrWhiteSpace(accountParameter.Username))
+            {
+                account = accountRepository.GetAccountByUsername(accountParameter.Username);
             }
 
-            return account;
-        }
+            if (account == null)
+            {
+                throw new InvalidParameterException("Invalid username or email.");
+            }
 
-        private bool ContainsByUsername(string username)
-        {
-            RequiredNotNull(username);
-            var account = db.Accounts.FirstOrDefault(x => x.Name == username);
-            return account != null;
-        }
+            accountParameter.ValidatePassword();
+            if (accountParameter.GetCryptedPassword() != account.Password)
+            {
+                throw new InvalidParameterException("Wrong password.");
+            }
 
-        private bool ContainsByEmail(string email)
-        {
-            RequiredNotNull(email);
-            var account = db.Accounts.FirstOrDefault(x => x.Email == email);
-            return account != null;
+            return new AccountResult(account);
         }
     }
 }
