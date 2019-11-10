@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentManagement.Parameters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,5 +19,15 @@ namespace StudentManagement.Models
         public bool IsAdmin { get; set; }
 
         public List<Shop> Shops { get; set; }
+
+        public Account()
+        { }
+
+        public Account(AccountParameter account)
+        {
+            Name = account.Username;
+            Email = account.Email;
+            Password = account.GetCryptedPassword();
+        }
     }
 }
