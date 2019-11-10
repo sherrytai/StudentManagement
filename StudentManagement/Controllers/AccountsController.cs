@@ -15,11 +15,8 @@ namespace StudentManagement.Controllers
     [Route("api/v0/[controller]")]
     public class AccountsController : BaseController
     {
-        private AccountRepository accountRepository;
-
-        public AccountsController(AccountRepository accountRepository)
+        public AccountsController(Repositories.Repositories repositories) : base(repositories)
         {
-            this.accountRepository = accountRepository;
         }
 
         // TODO need Admin permission
@@ -38,6 +35,14 @@ namespace StudentManagement.Controllers
             var account = accountRepository.GetAccountById(id);
 
             return new AccountResult(account);
+        }
+
+        [HttpGet("{accountId}/shops")]
+        public IEnumerable<ShopResult> GetAccountShops(int accountId, int offset = 0, int limit = 10)
+        {
+            var shops = accountRepository.GetAccountShops(accountId, offset, limit);
+
+            return shops.Select(x => new ShopResult(x));
         }
 
         // POST api/<controller>

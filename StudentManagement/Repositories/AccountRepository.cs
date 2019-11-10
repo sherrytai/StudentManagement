@@ -137,6 +137,16 @@ namespace StudentManagement.Repositories
             return db.Accounts.Skip(offset).Take(limit);
         }
 
+        public IEnumerable<Shop> GetAccountShops(int accountId, int offset, int limit)
+        {
+            Validator.ValidateOffsetAndLimit(offset, limit);
+            var account = GetAccountById(accountId);
+            var size = account.Shops.Count;
+            Validator.ValidateOffsetAndLimitWithSize(offset, limit, size);
+
+            return account.Shops.Skip(offset).Take(limit);
+        }
+
         public void Delete(int id)
         {
             var account = GetAccountById(id);

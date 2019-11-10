@@ -12,11 +12,8 @@ namespace StudentManagement.Controllers
     [Route("api/v0/[controller]")]
     public class ShopsController : BaseController
     {
-        private ShopRepository shopRepository;
-
-        public ShopsController(ShopRepository shopRepository)
+        public ShopsController(Repositories.Repositories repositories) : base(repositories)
         {
-            this.shopRepository = shopRepository;
         }
 
         // GET: api/<controller>
