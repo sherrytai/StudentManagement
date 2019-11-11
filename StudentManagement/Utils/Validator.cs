@@ -32,7 +32,7 @@ namespace StudentManagement.Utils
             ValidateString(parameterName, parameterValue);
             if (!parameterValue.All(c => char.IsLetterOrDigit(c)))
             {
-                throw new InvalidParameterException($"{parameterName} only can contain letter or digit .");
+                throw new InvalidParameterException($"{parameterName} can only contain letter or digit .");
             }
         }
 
