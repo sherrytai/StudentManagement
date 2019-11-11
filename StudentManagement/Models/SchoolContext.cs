@@ -33,6 +33,24 @@ namespace StudentManagement.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>().ToTable("Student");
+
+            // https://docs.microsoft.com/en-us/ef/core/modeling/indexes
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Email).IsUnique();
+            modelBuilder.Entity<Account>()
+                .HasIndex(a => a.Name).IsUnique();
+
+            modelBuilder.Entity<Shop>()
+                .HasIndex(a => a.Name).IsUnique();
+            modelBuilder.Entity<Shop>()
+                .HasIndex(a => a.Description);
+            modelBuilder.Entity<Shop>()
+                .HasIndex(a => a.Category);
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(a => a.Name).IsUnique();
+            modelBuilder.Entity<Product>()
+                .HasIndex(a => a.Description);
         }
     }
 }

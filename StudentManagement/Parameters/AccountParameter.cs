@@ -7,13 +7,13 @@ namespace StudentManagement.Parameters
 {
     public class AccountParameter
     {
-        [JsonProperty("username", Order = 0)]
+        [JsonProperty(PropertyName = "username", Order = 0)]
         public string Username { get; set; }
 
-        [JsonProperty("email", Order = 1)]
+        [JsonProperty(PropertyName = "email", Order = 1)]
         public string Email { get; set; }
 
-        [JsonProperty("password", Order = 2)]
+        [JsonProperty(PropertyName = "password", Order = 2)]
         public string Password { get; set; }
 
         public void Validate()
@@ -25,26 +25,17 @@ namespace StudentManagement.Parameters
 
         public void ValidateUsername()
         {
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                throw new InvalidParameterException("Invalid username.");
-            }
+            Validator.ValidateString("username", Username); // TODO validate the max length
         }
 
         public void ValidateEmail()
         {
-            if (string.IsNullOrWhiteSpace(Email) || !IsValidEmail(Email))
-            {
-                throw new InvalidParameterException("Invalid email.");
-            }
+            Validator.ValidateString("email", Email);
         }
 
         public void ValidatePassword()
         {
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                throw new InvalidParameterException("Invalid password.");
-            }
+            Validator.ValidateString("password", Password);
 
             if (Password.Length < 6)
             {

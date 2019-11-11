@@ -17,7 +17,6 @@ namespace StudentManagement.ExceptionFilters
         {
             var status = HttpStatusCode.InternalServerError;
             var message = "Error happens in server.";
-            var isHandled = true;
             if (context.Exception is InvalidParameterException)
             {
                 status = HttpStatusCode.BadRequest;
@@ -35,22 +34,19 @@ namespace StudentManagement.ExceptionFilters
             }
             else
             {
-                isHandled = false;
+                //TODO log error
             }
 
-            if (isHandled)
-            {
-                var result = new { message = message };
-                var json = JsonConvert.SerializeObject(result);
-                var bytes = Encoding.UTF8.GetBytes(json);
+            var result = new { message = message };
+            var json = JsonConvert.SerializeObject(result);
+            var bytes = Encoding.UTF8.GetBytes(json);
 
-                context.ExceptionHandled = true;
-                var response = context.HttpContext.Response;
-                response.StatusCode = (int)status;
-                response.ContentType = "application/json";
-                response.ContentLength = bytes.Length;
-                var asyncResult = response.BodyWriter.WriteAsync(bytes).Result;
-            }
+            context.ExceptionHandled = true;
+            var response = context.HttpContext.Response;
+            response.StatusCode = (int)status;
+            response.ContentType = "application/json";
+            response.ContentLength = bytes.Length;
+            var asyncResult = response.BodyWriter.WriteAsync(bytes).Result;
         }
     }
 }
