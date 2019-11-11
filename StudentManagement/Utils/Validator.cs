@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace StudentManagement.Utils
@@ -23,6 +24,24 @@ namespace StudentManagement.Utils
             if (parameter == null)
             {
                 throw new InvalidParameterException("Found null parameter.");
+            }
+        }
+
+        public static void ValidateName(string parameterName, string parameterValue)
+        {
+            ValidateString(parameterName, parameterValue);
+            if (!parameterValue.All(c => char.IsLetterOrDigit(c)))
+            {
+                throw new InvalidParameterException($"{parameterName} can only contain letter or digit .");
+            }
+        }
+
+        public static void ValidateEmail(string parameterName, string parameterValue)
+        {
+            ValidateString(parameterName, parameterValue);
+            if (!IsValidEmail(parameterValue))
+            {
+                throw new InvalidParameterException($"{parameterName} is not valid email .");
             }
         }
 
@@ -58,6 +77,13 @@ namespace StudentManagement.Utils
             {
                 throw new InvalidParameterException($"{nameof(offset)} is out of range.");
             }
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            var regex = new Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+            var result = regex.Match(email);
+            return result.Success;
         }
     }
 }

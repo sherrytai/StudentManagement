@@ -94,7 +94,7 @@ namespace StudentManagement.Repositories
 
         public Account GetAccountByUsername(string username)
         {
-            Validator.ValidateString(nameof(username), username);
+            Validator.ValidateName(nameof(username), username);
             var account = db.Accounts.FirstOrDefault(x => x.Name == username);
             if (account == null)
             {
@@ -111,6 +111,18 @@ namespace StudentManagement.Repositories
             if (account == null)
             {
                 throw new NotFoundException($"Can't find account {email}.");
+            }
+
+            return account;
+        }
+
+        public Account GetAccountByEmailOrUsername(string key)
+        {
+            Validator.ValidateString(nameof(key), key);
+            var account = db.Accounts.FirstOrDefault(x => x.Email == key || x.Name == key);
+            if (account == null)
+            {
+                throw new NotFoundException($"Can't find account {key}.");
             }
 
             return account;
