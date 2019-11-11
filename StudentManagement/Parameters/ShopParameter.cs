@@ -36,7 +36,7 @@ namespace StudentManagement.Parameters
 
         public void ValidateName()
         {
-            Validator.ValidateString("name", Name);
+            Validator.ValidateName("name", Name);
         }
 
         public void ValidateDescription()

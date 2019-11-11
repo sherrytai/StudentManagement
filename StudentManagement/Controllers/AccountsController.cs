@@ -72,15 +72,14 @@ namespace StudentManagement.Controllers
         public AccountResult Login([FromBody]AccountParameter accountParameter)
         {
             Validator.RequiredNotNull(accountParameter);
-            Account account = null;
-            if (!string.IsNullOrWhiteSpace(accountParameter.Email))
+            var key = !string.IsNullOrWhiteSpace(accountParameter.Email) ? accountParameter.Email : accountParameter.Username;
+
+            if (string.IsNullOrWhiteSpace(key))
             {
-                account = accountRepository.GetAccountByEmail(accountParameter.Email);
+                throw new InvalidParameterException("Invalid username or email.");
             }
-            else if (!string.IsNullOrWhiteSpace(accountParameter.Username))
-            {
-                account = accountRepository.GetAccountByUsername(accountParameter.Username);
-            }
+
+            var account = accountRepository.GetAccountByEmailOrUsername(key);
 
             if (account == null)
             {

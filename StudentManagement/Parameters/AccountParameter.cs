@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StudentManagement.Exceptions;
 using StudentManagement.Utils;
-using System.Text.RegularExpressions;
 
 namespace StudentManagement.Parameters
 {
@@ -25,17 +24,22 @@ namespace StudentManagement.Parameters
 
         public void ValidateUsername()
         {
-            Validator.ValidateString("username", Username); // TODO validate the max length
+            Validator.ValidateName("username", Username); // TODO validate the max length
         }
 
         public void ValidateEmail()
         {
-            Validator.ValidateString("email", Email);
+            Validator.ValidateEmail("email", Email);
         }
 
         public void ValidatePassword()
         {
             Validator.ValidateString("password", Password);
+
+            if (Password.Contains(" "))
+            {
+                throw new InvalidParameterException("password can not contain white space.");
+            }
 
             if (Password.Length < 6)
             {
@@ -46,13 +50,6 @@ namespace StudentManagement.Parameters
         public string GetCryptedPassword()
         {
             return Md5Hash.GetHash(Password);
-        }
-
-        private bool IsValidEmail(string email)
-        {
-            var regex = new Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
-            var result = regex.Match(email);
-            return result.Success;
         }
     }
 }
