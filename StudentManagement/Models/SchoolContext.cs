@@ -48,7 +48,9 @@ namespace StudentManagement.Models
                 .HasIndex(a => a.Category);
 
             modelBuilder.Entity<Product>()
-                .HasIndex(a => a.Name).IsUnique();
+                .HasIndex(a => a.Name);
+            modelBuilder.Entity<Product>()
+                .HasIndex(a => new { a.ShopId, a.Name }).IsUnique();
             modelBuilder.Entity<Product>()
                 .HasIndex(a => a.Description);
         }
