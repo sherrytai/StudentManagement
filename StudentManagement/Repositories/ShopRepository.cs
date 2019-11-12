@@ -27,8 +27,8 @@ namespace StudentManagement.Repositories
             shopParameter.Validate();
 
             var account = accountRepository.GetAccountById(shopParameter.AccountId);
-            var shop = account.Shops?.FirstOrDefault(x => x.Name == shopParameter.Name);
-            if (shop != null)
+            var hasConflict = db.Shops.Any(x => x.Name == shopParameter.Name);
+            if (hasConflict)
             {
                 throw new ConflictException("Shop name conflicts.");
             }
@@ -36,7 +36,7 @@ namespace StudentManagement.Repositories
             account.Shops.Add(new Shop(shopParameter));
             db.SaveChanges();
 
-            return account.Shops.First(x => x.Name == shopParameter.Name);
+            return db.Shops.First(x => x.Name == shopParameter.Name);
         }
 
         public Shop GetShopById(int id)
