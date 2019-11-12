@@ -4,49 +4,20 @@ using StudentManagement.Utils;
 
 namespace StudentManagement.Parameters
 {
-    public class ShopParameter
+    public class ShopParameter : ShopUpdateParameter
     {
-        [JsonProperty(PropertyName = "accountId", Order = 0)]
+        [JsonProperty(PropertyName = "accountId", Order = 5)]
         public int AccountId { get; set; }
 
-        [JsonProperty(PropertyName = "name", Order = 1)]
-        public string Name { get; set; }
-
-        [JsonProperty(PropertyName = "description", Order = 2)]
-        public string Description { get; set; }
-
-        [JsonProperty(PropertyName = "category", Order = 3)]
-        public string Category { get; set; }
-
-        [JsonProperty(PropertyName = "status", Order = 4)]
-        public ShopStatus Status { get; set; } = ShopStatus.Draft;
-
-        public void Validate()
+        public override void Validate()
         {
             ValidateId();
-            ValidateName();
-            ValidateDescription();
-            ValidateCategory();
+            base.Validate();
         }
 
         public void ValidateId()
         {
             Validator.ValidateId("accountId", AccountId);
-        }
-
-        public void ValidateName()
-        {
-            Validator.ValidateName("name", Name);
-        }
-
-        public void ValidateDescription()
-        {
-            Validator.ValidateString("description", Description);
-        }
-
-        public void ValidateCategory()
-        {
-            Validator.ValidateString("category", Category);
         }
     }
 }
