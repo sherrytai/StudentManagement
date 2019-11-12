@@ -32,7 +32,7 @@ namespace StudentManagement.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]ShopParameter shopParameter)
+        public IActionResult Post([FromBody]ShopUpdateParameter shopParameter)
         {
             var shop = shopRepository.Add(shopParameter);
             return Created($"api/v1/shops/{shop.Id}", new ShopResult(shop));
