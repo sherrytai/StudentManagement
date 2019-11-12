@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8"> 
+	<title>Shop</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body ng-controller="MainCtrl">
+    <div class="jumbotron text-center" >
+        <p>Shop Id:{{shop.id}}</p>
+        <p>Name:{{shop.name}}</p>
+        <p>Description:{{shop.description}}</p>
+        <p>Category:{{shop.category}}</p>
+	</div>
+    <div class="container">
+        <div class="row" >
+            <div class="col-sm-4">
+                <div class="productImg">img</div>
+                <br>
+                <p>Name:{{product.Name}}</p>
+                <p>Description:{{product.Description}}</p>
+                <p>Price:{{product.Price}}</p>
+            </div>
+            <div class="col-sm-4">
+                <div class="productImg">img</div>
+                <br>
+                <p>Name:{{product.Name}}</p>
+                <p>Description:{{product.Description}}</p>
+                <p>Price:{{product.Price}}</p>
+            </div>
+            <div class="col-sm-4">
+                <div class="productImg">img</div>
+                <br>
+                <p>Name:{{product.Name}}</p>
+                <p>Description:{{product.Description}}</p>
+                <p>Price:{{product.Price}}</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    var app = angular.module('app',[])
+    app.controller("MainCtrl", function($scope, $http){
+        $http({
+    	            method : "GET",
+    	            url : "api/v1/shops/"
+    	        }).then(function mySuccess(response) {
+
+    	            $scope.shop = response.data;
+    	            console.log(response.data);
+
+    	        }, function myError(response) {
+
+    	            console.log(response.statusText);
+    	        });
+    });
+</script>
+</body>
+</html>
