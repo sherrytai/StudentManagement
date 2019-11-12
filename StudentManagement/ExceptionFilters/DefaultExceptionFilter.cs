@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using StudentManagement.Exceptions;
 using System.IO;
@@ -31,6 +32,11 @@ namespace StudentManagement.ExceptionFilters
             {
                 status = HttpStatusCode.NotFound;
                 message = context.Exception.Message;
+            }
+            else if (context.Exception is DbUpdateException)
+            {
+                status = HttpStatusCode.BadRequest;
+                message = "Invalid parameters."; //TODO log
             }
             else
             {

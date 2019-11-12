@@ -59,6 +59,57 @@ namespace StudentManagement.Repositories
             return db.Shops.Skip(offset).Take(limit);
         }
 
+        public bool ContainsByName(string name)
+        {
+            Validator.ValidateName(nameof(name), name);
+            return db.Shops.Any(s => s.Name == name);
+        }
+
+        public void Update(int id, ShopParameter shopParameter)
+        {
+            Validator.RequiredNotNull(shopParameter);
+            var shop = GetShopById(id);
+            var hasModified = false;
+            if (!string.IsNullOrWhiteSpace(shopParameter.Name) && shop.Name != shopParameter.Name)
+            {
+                shopParameter.ValidateName();
+                if (ContainsByName(shopParameter.Name))
+                {
+                    throw new ConflictException("shop name conflicts.");
+                }
+
+                shop.Name = shopParameter.Name;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(shopParameter.Description) && shop.Description != shopParameter.Description)
+            {
+                shopParameter.ValidateDescription();
+                shop.Description = shopParameter.Description;
+                hasModified = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(shopParameter.Category) && shop.Category != shopParameter.Category)
+            {
+                shopParameter.ValidateCategory();
+                shop.Category = shopParameter.Category;
+                hasModified = true;
+            }
+
+            if (shop.Status != shopParameter.Status)
+            {
+                shop.Status = shopParameter.Status;
+                hasModified = true;
+            }
+
+            if (!hasModified)
+            {
+                throw new InvalidParameterException("Can't find valid change.");
+            }
+
+            db.SaveChanges();
+        }
+
         public void Delete(int id)
         {
             var shop = GetShopById(id);
