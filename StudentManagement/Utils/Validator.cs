@@ -73,9 +73,9 @@ namespace StudentManagement.Utils
 
         public static void ValidateOffsetAndLimitWithSize(int offset, int limit, int size)
         {
-            if (offset >= size)
+            if (offset >= size && offset != 0)
             {
-                throw new InvalidParameterException($"{nameof(offset)} is out of range.");
+                throw new InvalidParameterException($"offset is out of range.");
             }
         }
 
