@@ -43,7 +43,11 @@ namespace StudentManagement.Models
             Name = shopParameter.Name;
             Description = shopParameter.Description;
             Category = shopParameter.Category;
-            Status = shopParameter.Status;
+            if (shopParameter.Status != null && shopParameter.Status.HasValue)
+            {
+                Status = shopParameter.Status.Value;
+            }
+
             AccountId = shopParameter.AccountId;
         }
     }

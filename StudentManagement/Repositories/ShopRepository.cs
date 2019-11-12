@@ -65,7 +65,7 @@ namespace StudentManagement.Repositories
             return db.Shops.Any(s => s.Name == name);
         }
 
-        public void Update(int id, ShopParameter shopParameter)
+        public void Update(int id, ShopUpdateParameter shopParameter)
         {
             Validator.RequiredNotNull(shopParameter);
             var shop = GetShopById(id);
@@ -96,9 +96,9 @@ namespace StudentManagement.Repositories
                 hasModified = true;
             }
 
-            if (shop.Status != shopParameter.Status)
+            if (shopParameter.Status != null && shopParameter.Status.HasValue && shop.Status != shopParameter.Status.Value)
             {
-                shop.Status = shopParameter.Status;
+                shop.Status = shopParameter.Status.Value;
                 hasModified = true;
             }
 

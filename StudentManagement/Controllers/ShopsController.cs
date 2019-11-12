@@ -31,7 +31,7 @@ namespace StudentManagement.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]ShopUpdateParameter shopParameter)
+        public IActionResult Post([FromBody]ShopParameter shopParameter)
         {
             var shop = shopRepository.Add(shopParameter);
             return Created($"api/v1/shops/{shop.Id}", new ShopResult(shop));
@@ -39,7 +39,7 @@ namespace StudentManagement.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]ShopParameter shopParameter)
+        public void Put(int id, [FromBody]ShopUpdateParameter shopParameter)
         {
             shopRepository.Update(id, shopParameter);
         }
