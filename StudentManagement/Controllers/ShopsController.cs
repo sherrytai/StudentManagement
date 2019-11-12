@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Parameters;
-using StudentManagement.Repositories;
 using StudentManagement.Results;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -42,7 +41,7 @@ namespace StudentManagement.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]ShopParameter shopParameter)
         {
-            // TODO
+            shopRepository.Update(id, shopParameter);
         }
 
         // DELETE api/<controller>/5
