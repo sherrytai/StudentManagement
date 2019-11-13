@@ -30,11 +30,11 @@
      .config(function ($routeProvider) {
         $routeProvider
         .when('/signup', {
-            templateUrl: 'SignUp.html',
+            templateUrl: 'html/SignUp.html',
             controller: 'SignUpCtrl'
         })
         .when('/signin', {
-            templateUrl: 'SignIn.html',
+            templateUrl: 'html/SignIn.html',
             controller: 'SignInCtrl'
         })
         .otherwise({
@@ -43,6 +43,7 @@
     });
   </script>
 
+<script src="js/SignUpCtrl.js"></script>
 <script src="js/SignInCtrl.js"></script>
 
 </body>

@@ -48,7 +48,7 @@
     app.controller("MainCtrl", function($scope, $http){
         $http({
     	            method : "GET",
-    	            url : "api/v1/shops/"
+    	            url : "api/v1/shops/0"
     	        }).then(function mySuccess(response) {
 
     	            $scope.shop = response.data;

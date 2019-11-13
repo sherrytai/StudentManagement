@@ -3,7 +3,7 @@
 var app=angular.module("app")
 app.controller("SignUpCtrl", function($scope, $http, $route){
 		 
-		 $scope.$route = $route;
+		$scope.$route = $route;
 
 		$scope.signUp = function(){
 
