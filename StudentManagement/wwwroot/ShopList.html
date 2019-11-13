@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8"> 
+	<title>Shops</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+    <div  ng-controller="MainCtrl" class="container">
+		<div class="row">
+			<div class="col-sm-12 ">
+				<table class="table">
+					<caption>Shop List</caption>
+					<thread>
+						<tr>
+							<th>Shop Id</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Category</th>
+							<th>Status</th>
+						</tr>
+					</thread>
+					<tbody >
+						<tr ng-repeat="x in shopList">
+							<td>{{x.id}}</td>
+                            <td>{{x.name}}</td>
+                            <td>{{x.description}}</td>
+                            <td>{{x.category}}</td>
+							<td>
+								<a href="javascript:;" style="text-decoration:none" ng-click="del(x.id)">delete</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+                <button class="btn btn-default" data-toggle="modal" data-target="#addShop">Add</button>
+                <div class="modal fade" id="addShop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	                <div class="modal-dialog">
+		                <div class="modal-content">
+			                <div class="modal-header">
+				                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					                &times;
+				                </button>
+				                <h4 class="modal-title" id="myModalLabel">
+					                Add a Shop
+				                </h4>
+			                </div>
+			                <div class="modal-body" style="height:270px;">
+
+				                    <form role="form" class="col-md-6" style="padding:3px;">
+					                    <div class="form-group">
+						                    <input type="number" ng-model="shop.accountId" class="form-control" placeholder="please input account id">  
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.name" class="form-control" placeholder="please input name">
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.description" class="form-control" placeholder="please input description">
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.category" class="form-control" placeholder="please input category">
+					                    </div>
+					                    <div class="form-group" style="margin-top:15px">
+						                    <button type="submit" ng-click="add()" class="btn btn-default" data-dismiss="modal">Add</button>
+					                    </div>
+				                    </form>
+		                    </div><!-- /.modal-content -->
+	                    </div><!-- /.modal -->
+                    </div>
+			    </div>
+                <button class="btn btn-default" data-toggle="modal" data-target="#updateShop">Update</button>
+                <div class="modal fade" id="updateShop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	                <div class="modal-dialog">
+		                <div class="modal-content">
+			                <div class="modal-header">
+				                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					                &times;
+				                </button>
+				                <h4 class="modal-title" id="myModalLabel">
+					                Update a Shop
+				                </h4>
+			                </div>
+			                <div class="modal-body" style="height:270px;">
+
+				                    <form role="form" class="col-md-6" style="padding:3px;">
+					                    <div class="form-group">
+						                    <input type="number" ng-model="shop.id" class="form-control" placeholder="please input shop id">  
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.name" class="form-control" placeholder="please input name">
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.description" class="form-control" placeholder="please input description">
+					                    </div>
+					                    <div class="form-group">
+						                    <input type="search" ng-model="shop.category" class="form-control" placeholder="please input category">
+					                    </div>
+					                    <div class="form-group" style="margin-top:15px">
+						                    <button type="submit" ng-click="update()" class="btn btn-default" data-dismiss="modal">Update</button>
+					                    </div>
+				                    </form>
+		                    </div><!-- /.modal-content -->
+	                    </div><!-- /.modal -->
+                    </div>
+			    </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+	var app = angular.module("app")
+	app.controller("MainCtrl", function ($scope, $http) {
+
+	    $scope.getAllData = function () {
+
+	        $http({
+	            method: "GET",
+	            url: "api/v1/shops"
+	        }).then(function mySuccess(response) {
+
+	            $scope.shopList = response.data;
+	            console.log(response.data);
+
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+	    }
+
+	    $scope.getAllData();
+
+	    $scope.add = function () {
+
+	        console.log($scope.shop);
+	        $http.post("api/v1/shops", $scope.shop).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+
+	        $scope.shop = {};
+	    }
+
+	    $scope.del = function (id) {
+
+	        var url = "api/v1/shops/" + id;
+	        console.log(url);
+	        $http.delete(url).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+
+	    }
+
+	    $scope.update = function () {
+
+	        console.log($scope.shop);
+	        $http.put("api/v1/shops", $scope.shop).then(function mySuccess(response) {
+
+	            console.log(response);
+
+	            $scope.getAllData();
+	        }, function myError(response) {
+
+	            console.log(response.statusText);
+	        });
+
+	    }
+	});
+
+	
+
+</script>
+
+</body>
+</html>

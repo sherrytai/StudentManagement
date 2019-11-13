@@ -23,7 +23,7 @@ namespace StudentManagement.ExceptionFilters
                 status = HttpStatusCode.BadRequest;
                 message = context.Exception.Message;
             }
-            else if (context.Exception is ConflictException) // TODO application is still stopped by this exception
+            else if (context.Exception is ConflictException)
             {
                 status = HttpStatusCode.Conflict;
                 message = context.Exception.Message;

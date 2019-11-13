@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html >
+<head>
+	<meta charset="utf-8"> 
+	<title>Index</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.7.0/angular.min.js"></script>
+    <script src="https://cdn.staticfile.org/angular.js/1.7.0/angular-route.min.js"></script>
+</head>
+<body ng-app="app">
+    <nav class="navbar navbar-default" role="navigation"> 
+        <div class="container-fluid"> 
+            <div class="navbar-header"> 
+                <a class="navbar-brand" href="#!/">Shop</a> 
+            </div> 
+            <ul class="nav navbar-nav navbar-right"> 
+                <li><a href="#!/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
+                <li><a href="#!/signin"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li> 
+            </ul> 
+        </div> 
+    </nav>
+
+    <div ng-view></div>
+
+   <script type="text/javascript">
+    angular.module('app', ['ngRoute'])
+     .config(function ($routeProvider) {
+        $routeProvider
+        .when('/signup', {
+            templateUrl: 'html/SignUp.html',
+            controller: 'SignUpCtrl'
+        })
+        .when('/signin', {
+            templateUrl: 'html/SignIn.html',
+            controller: 'SignInCtrl'
+        })
+        .otherwise({
+            redirectTo: '/Index' 
+        });           
+    });
+  </script>
+
+<script src="js/SignUpCtrl.js"></script>
+<script src="js/SignInCtrl.js"></script>
+
+</body>
+</html>
