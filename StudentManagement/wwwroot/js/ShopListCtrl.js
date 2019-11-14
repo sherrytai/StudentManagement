@@ -1,7 +1,9 @@
 ﻿'use strict'
 
 var app = angular.module("app")
-app.controller("MainCtrl", function ($scope, $http) {
+app.controller("ShopListCtrl", function ($scope, $http, $route) {
+
+    $scope.$route = $route;
 
     $scope.getAllData = function () {
 
@@ -11,6 +13,24 @@ app.controller("MainCtrl", function ($scope, $http) {
         }).then(function mySuccess(response) {
 
             $scope.shopList = response.data;
+
+            $scope.editingData = {};
+
+            for (var i = 0, length = $scope.shopList.length; i < length; i++) {
+              $scope.editingData[$scope.shopList[i].id] = false;
+            }
+
+            for (var i = 0; i < $scope.shopList.length; ++i) 
+            {
+                var x = $scope.shopList[i]
+                if(x.status == 0){
+                    x.status = "draft";
+                }
+                else if(x.status == 1){
+                    x.status = "active";
+                }
+                console.log(x);
+            }
             console.log(response.data);
 
         }, function myError(response) {
@@ -23,6 +43,7 @@ app.controller("MainCtrl", function ($scope, $http) {
 
     $scope.add = function () {
 
+        $scope.shop.status = parseInt($scope.shop.status, 10);
         console.log($scope.shop);
         $http.post("api/v1/shops", $scope.shop).then(function mySuccess(response) {
 
@@ -53,10 +74,22 @@ app.controller("MainCtrl", function ($scope, $http) {
 
     }
 
-    $scope.update = function () {
+    $scope.modify = function(shopdata){
+        $scope.editingData[shopdata.id] = true;
+    };
 
-        console.log($scope.shop);
-        $http.put("api/v1/shops", $scope.shop).then(function mySuccess(response) {
+    $scope.update = function(shopdata){
+        $scope.editingData[shopdata.id] = false;
+        console.log(shopdata);
+
+        if(shopdata.status == "draft"){
+            shopdata.status = 0;
+        }
+        else if(shopdata.status == "active"){
+            shopdata.status = 1;
+        }
+
+        $http.put("api/v1/shops/" + shopdata.id, shopdata).then(function mySuccess(response) {
 
             console.log(response);
 
@@ -65,6 +98,8 @@ app.controller("MainCtrl", function ($scope, $http) {
 
             console.log(response.statusText);
         });
+    };
 
-    }
+
+
 });
