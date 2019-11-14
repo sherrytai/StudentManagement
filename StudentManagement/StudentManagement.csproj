@@ -30,6 +30,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\index.html" />
     <Content Remove="wwwroot\register.html" />
+    <Content Remove="wwwroot\update.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\index.html" />

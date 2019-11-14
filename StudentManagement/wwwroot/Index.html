@@ -16,6 +16,10 @@
             <div class="navbar-header"> 
                 <a class="navbar-brand" href="#!/">Shop</a> 
             </div> 
+            <ul class="nav navbar-nav">
+            	<li><a href="#!/shoplist">Shop List</a></li>
+            	<li><a href="#!/shop">Shop</a></li>
+        	</ul>
             <ul class="nav navbar-nav navbar-right"> 
                 <li><a href="#!/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
                 <li><a href="#!/signin"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li> 
@@ -37,6 +41,14 @@
             templateUrl: 'html/SignIn.html',
             controller: 'SignInCtrl'
         })
+        .when('/shoplist', {
+            templateUrl: 'html/ShopList.html',
+            controller: 'ShopListCtrl'
+        })
+        .when('/shop', {
+            templateUrl: 'html/Shop.html',
+            controller: 'ShopCtrl'
+        })
         .otherwise({
             redirectTo: '/Index' 
         });           
@@ -45,6 +57,10 @@
 
 <script src="js/SignUpCtrl.js"></script>
 <script src="js/SignInCtrl.js"></script>
+<script src="js/ShopListCtrl.js"></script>
+<script src="js/ShopCtrl.js"></script>
+<script src="js/ShopListButton.js"></script>
+
 
 </body>
 </html>

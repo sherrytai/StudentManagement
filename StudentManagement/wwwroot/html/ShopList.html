@@ -1,0 +1,77 @@
+﻿<div class="container">
+		<div class="row">
+			<div class="col-sm-12 ">
+				<table class="table">
+					<caption>Shop List</caption>
+					<thread>
+						<tr>
+							<th>Shop Id</th>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Category</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thread>
+					<tbody >
+						<tr ng-repeat="shopdata in shopList">
+							<td>
+					            {{shopdata.id}}
+					        </td>
+					        <td>
+					            <div ng-hide="editingData[shopdata.id]">{{shopdata.name}}</div>
+					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.name" /></div>
+					        </td>
+					        <td>
+					            <div ng-hide="editingData[shopdata.id]">{{shopdata.description}}</div>
+					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.description" /></div>
+					        </td>
+					        <td>
+					            <div ng-hide="editingData[shopdata.id]">{{shopdata.category}}</div>
+					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.category" /></div>
+					        </td>
+					        <td>
+					            <div ng-hide="editingData[shopdata.id]">{{shopdata.status}}</div>
+					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.status" /></div>
+					        </td>
+							<td>
+								<button class="btn btn-default" style="margin-right:10px;" ng-click="del(shopdata.id)">Delete</button>
+								<button class="btn btn-default" ng-hide="editingData[shopdata.id]" ng-click="modify(shopdata)">Modify</button>
+					            <button class="btn btn-default" ng-show="editingData[shopdata.id]" ng-click="update(shopdata)">Update</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+                <button class="btn btn-default" onclick="boxClick()">Add</button>
+		        <div class="box">
+		            <form role="form" class="col-md-8" style="padding:3px;">
+		                <div class="form-group">
+		                    <input type="number" ng-model="shop.accountId" class="form-control" placeholder="please input account id">  
+		                </div>
+		                <div class="form-group">
+		                    <input type="search" ng-model="shop.name" class="form-control" placeholder="please input name">
+		                </div>
+		                <div class="form-group">
+		                    <input type="search" ng-model="shop.description" class="form-control" placeholder="please input description">
+		                </div>
+		                <div class="form-group">
+		                    <input type="search" ng-model="shop.category" class="form-control" placeholder="please input category">
+		                </div>
+		                <div class="form-group">
+		                    <span class="radio" style="display: inline">
+		                        <label class="radio-inline">
+		                            <input type="radio" name="status" value="0" ng-model="shop.status">draft
+		                        </label>
+		                        <label class="radio-inline">
+		                            <input type="radio" name="status" value="1" ng-model="shop.status">active
+		                        </label>
+		                    </span>
+		                </div>
+		                <div class="form-group" style="margin-top:15px">
+		                    <button type="submit" ng-click="add()" class="btn btn-default" data-dismiss="modal">Add</button>
+		                </div>
+		            </form>
+		        </div>		                       
+            </div>
+        </div>
+    </div>
