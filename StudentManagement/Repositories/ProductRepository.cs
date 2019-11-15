@@ -34,7 +34,7 @@ namespace StudentManagement.Repositories
             return db.Products.First(x => x.Name == productParameter.Name);
         }
 
-        public Product GetShopById(int id)
+        public Product GetProductById(int id)
         {
             var product = db.Products.FirstOrDefault(x => x.Id == id);
             if (product == null)
@@ -63,7 +63,7 @@ namespace StudentManagement.Repositories
         public void Update(int id, ProductUpdateParameter productParameter)
         {
             Validator.RequiredNotNull(productParameter);
-            var product = GetShopById(id);
+            var product = GetProductById(id);
             var hasModified = false;
             if (!string.IsNullOrWhiteSpace(productParameter.Name) && product.Name != productParameter.Name)
             {
@@ -114,7 +114,7 @@ namespace StudentManagement.Repositories
 
         public void Delete(int id)
         {
-            var product = GetShopById(id);
+            var product = GetProductById(id);
             db.Products.Remove(product);
 
             db.SaveChanges();
