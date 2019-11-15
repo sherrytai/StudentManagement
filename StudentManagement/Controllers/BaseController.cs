@@ -13,12 +13,14 @@ namespace StudentManagement.Controllers
         protected Repositories.Repositories repositories;
         protected AccountRepository accountRepository;
         protected ShopRepository shopRepository;
+        protected ProductRepository productRepository;
 
         public BaseController(Repositories.Repositories repositories)
         {
             this.repositories = repositories;
             accountRepository = repositories.AccountRepository;
             shopRepository = repositories.ShopRepository;
+            productRepository = repositories.ProductRepository;
         }
     }
 }

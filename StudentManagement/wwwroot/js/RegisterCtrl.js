@@ -1,11 +1,11 @@
 'use strict'
 
 var app=angular.module("app")
-app.controller("SignUpCtrl", function($scope, $http, $route){
+app.controller("RegisterCtrl", function($scope, $http, $route){
 		 
 		$scope.$route = $route;
 
-		$scope.signUp = function(){
+		$scope.register = function(){
 
             console.log($scope.user);
 

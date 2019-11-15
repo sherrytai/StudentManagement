@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using StudentManagement.Parameters;
 
 namespace StudentManagement.Models
 {
@@ -33,5 +34,18 @@ namespace StudentManagement.Models
 
         [ForeignKey("ShopId")]
         public virtual Shop Shop { get; set; }
+
+        public Product()
+        { }
+
+        public Product(ProductParameter productParameter)
+        {
+            Name = productParameter.Name;
+            Description = productParameter.Description;
+            Price = productParameter.Price;
+            Amount = productParameter.Amount;
+            Status = productParameter.Status.Value;
+            ShopId = productParameter.ShopId;
+        }
     }
 }
