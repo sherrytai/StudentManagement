@@ -15,8 +15,7 @@ app.controller("RegisterCtrl", function($scope, $http, $route){
 	            console.log(response);
 
 	        }, function myError(response) {
-
-                
+              
 	            console.log(response);
                 alert(response.data.message);
 	        });

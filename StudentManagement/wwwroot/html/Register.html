@@ -1,8 +1,8 @@
-<div ng-controller="SignUpCtrl" class="container">
+<div class="container">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
             <form name="userInfo" role="form" style="padding:3px;">
-                <h5 style="text-align:center">Sign Up</h5>
+                <h5 style="text-align:center">Register</h5>
 	            <div class="form-group">
 		            <input type="text" name="username" ng-model="user.username" class="form-control" placeholder="please input username" required>
                     <span style="color:red" ng-show="userInfo.username.$dirty && userInfo.username.$invalid">
@@ -26,7 +26,7 @@
                 <div class="form-group">
 		            <input type="text" name="passwordagain" ng-model="user.passwordagain" class="form-control" placeholder="please confirm password" ng-minlength="6">
                     <span style="color:red" ng-show="userInfo.passwordagain.$dirty && userInfo.passwordagain.$invalid">
-                        <span ng-show="userInfo.passwordagain.$error.required">password is required</span>
+                    <span ng-show="userInfo.passwordagain.$error.required">password is required</span>
                     </span>
                     <span style="color: red" ng-show="userInfo.passwordagain.$dirty && userInfo.password.$valid">
                     <span ng-show="user.passwordagain!=user.password">password doesn't match</span>

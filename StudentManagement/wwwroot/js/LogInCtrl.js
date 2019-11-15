@@ -1,11 +1,11 @@
 'use strict'
 
 var app=angular.module("app")
-app.controller("SignInCtrl", function($scope, $http, $route){
+app.controller("LogInCtrl", function($scope, $http, $route){
 
 	$scope.$route = $route;
 
-	$scope.signIn = function(){
+	$scope.logIn = function(){
 
         console.log($scope.user);
 		$http.post("api/v1/accounts/login", $scope.user).then(function mySuccess(response) {
