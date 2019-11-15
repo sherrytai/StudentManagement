@@ -28,11 +28,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="wwwroot\index.html" />
-    <Content Remove="wwwroot\register.html" />
-    <Content Remove="wwwroot\update.html" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="wwwroot\index.html" />
   </ItemGroup>
 </Project>

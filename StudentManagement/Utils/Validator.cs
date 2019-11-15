@@ -19,6 +19,22 @@ namespace StudentManagement.Utils
             }
         }
 
+        public static void RequriedNotLessThanZero(string parameterName, int parameterValue)
+        {
+            if (parameterValue < 0)
+            {
+                throw new InvalidParameterException($"{parameterName} should be not less than zero.");
+            }
+        }
+
+        public static void RequriedGreaterThanZero(string parameterName, double parameterValue)
+        {
+            if (parameterValue <= 0)
+            {
+                throw new InvalidParameterException($"{parameterName} should be greater than zero.");
+            }
+        }
+
         public static void RequiredNotNull(object parameter)
         {
             if (parameter == null)

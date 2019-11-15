@@ -38,6 +38,7 @@ namespace StudentManagement
                         .UseSqlite(Configuration.GetConnectionString("SchoolContext"))); //dbContext is not thread-safe, https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext
             services.AddScoped<AccountRepository>();
             services.AddScoped<ShopRepository>();
+            services.AddScoped<ProductRepository>();
             services.AddScoped<Repositories.Repositories>();
 
             // According to https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.0&tabs=visual-studio
