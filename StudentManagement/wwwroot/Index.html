@@ -21,8 +21,8 @@
             	<li><a href="#!/shop">Shop</a></li>
         	</ul>
             <ul class="nav navbar-nav navbar-right"> 
-                <li><a href="#!/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> 
-                <li><a href="#!/signin"><span class="glyphicon glyphicon-log-in"></span> Sign In</a></li> 
+                <li><a href="#!/register"><span class="glyphicon glyphicon-user"></span> Register </a></li> 
+                <li><a href="#!/login"><span class="glyphicon glyphicon-log-in"></span> Log In </a></li> 
             </ul> 
         </div> 
     </nav>
@@ -33,13 +33,13 @@
     angular.module('app', ['ngRoute'])
      .config(function ($routeProvider) {
         $routeProvider
-        .when('/signup', {
-            templateUrl: 'html/SignUp.html',
-            controller: 'SignUpCtrl'
+        .when('/register', {
+            templateUrl: 'html/Register.html',
+            controller: 'RegisterCtrl'
         })
-        .when('/signin', {
-            templateUrl: 'html/SignIn.html',
-            controller: 'SignInCtrl'
+        .when('/login', {
+            templateUrl: 'html/LogIn.html',
+            controller: 'LogInCtrl'
         })
         .when('/shoplist', {
             templateUrl: 'html/ShopList.html',
@@ -55,8 +55,8 @@
     });
   </script>
 
-<script src="js/SignUpCtrl.js"></script>
-<script src="js/SignInCtrl.js"></script>
+<script src="js/RegisterCtrl.js"></script>
+<script src="js/LogInCtrl.js"></script>
 <script src="js/ShopListCtrl.js"></script>
 <script src="js/ShopCtrl.js"></script>
 <script src="js/ShopListButton.js"></script>

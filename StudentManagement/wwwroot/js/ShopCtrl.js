@@ -12,6 +12,8 @@ app.controller("ShopCtrl", function($scope, $http, $route){
 
 	        }, function myError(response) {
 
-	            console.log(response.statusText);
+
+                    console.log(response);
+                    alert(response.data.message);
 	        });
 });

@@ -11,12 +11,17 @@ namespace StudentManagement.Repositories
 
         public ShopRepository ShopRepository { get; private set; }
 
+        public ProductRepository ProductRepository { get; private set; }
+
         public Repositories(
                     AccountRepository accountRepository,
-                    ShopRepository shopRepository)
+                    ShopRepository shopRepository,
+                    ProductRepository productRepository)
+
         {
             AccountRepository = accountRepository;
             ShopRepository = shopRepository;
+            ProductRepository = productRepository;
         }
     }
 }
