@@ -1,31 +1,79 @@
 ﻿<div class="jumbotron text-center" >
-    <p>Shop Id:{{shop.id}}</p>
-    <p>Name:{{shop.name}}</p>
-    <p>Description:{{shop.description}}</p>
-    <p>Category:{{shop.category}}</p>
+    <p>Shop Id:  <select ng-model="selectedShop" ng-change="getAllData()" ng-options="x.id for x in shopList"></select></p>
+    <p>Name:{{selectedShop.name}}</p>
+    <p>Description:{{selectedShop.description}}</p>
+    <p>Category:{{selectedShop.category}}</p>
 </div>
 <div class="container">
     <div class="row" >
-        <div class="col-sm-4">
+        <div class="col-sm-4 product_display" ng-repeat="productdata in products">
             <div class="productImg">img</div>
             <br>
-            <p>Name:{{product.Name}}</p>
-            <p>Description:{{product.Description}}</p>
-            <p>Price:{{product.Price}}</p>
-        </div>
-        <div class="col-sm-4">
-            <div class="productImg">img</div>
-            <br>
-            <p>Name:{{product.Name}}</p>
-            <p>Description:{{product.Description}}</p>
-            <p>Price:{{product.Price}}</p>
-        </div>
-        <div class="col-sm-4">
-            <div class="productImg">img</div>
-            <br>
-            <p>Name:{{product.Name}}</p>
-            <p>Description:{{product.Description}}</p>
-            <p>Price:{{product.Price}}</p>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Id:{{productdata.id}}</div>
+                <div ng-show="editingData[productdata.id]">Id:<input type="text" ng-model="productdata.id" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Name:{{productdata.name}}</div>
+                <div ng-show="editingData[productdata.id]">Name:<input type="text" ng-model="productdata.name" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Description:{{productdata.description}}</div>
+                <div ng-show="editingData[productdata.id]">Description:<input type="text" ng-model="productdata.description" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Price:${{productdata.price}}</div>
+                <div ng-show="editingData[productdata.id]">Price:$<input type="number" ng-model="productdata.price" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Amount:{{productdata.amount}}</div>
+                <div ng-show="editingData[productdata.id]">Amount:<input type="number" ng-model="productdata.amount" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Status:{{productdata.status}}</div>
+                <div ng-show="editingData[productdata.id]">Status:<input type="text" ng-model="productdata.status" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Shop Id:{{productdata.shopId}}</div>
+                <div ng-show="editingData[productdata.id]">Shop Id:<input type="text" ng-model="productdata.shopId" /></div>
+            </div>
+            <div class="product_button_display">
+                <button class="btn btn-default" style="margin-right:10px;" ng-click="del(productdata.id)">Delete</button>
+                <button class="btn btn-default" ng-hide="editingData[productdata.id]" ng-click="modify(productdata)">Modify</button>
+                <button class="btn btn-default" ng-show="editingData[productdata.id]" ng-click="update(productdata)">Update</button>
+            </div>
         </div>
     </div>
+
+    <button class="btn btn-default" onclick="boxClick()">Add</button>
+    <div class="box">
+        <form role="form" class="col-md-8" style="padding:3px;">
+            <div class="form-group">
+                <input type="search" ng-model="product.name" class="form-control" placeholder="please input name">
+            </div>
+            <div class="form-group">
+                <input type="search" ng-model="product.description" class="form-control" placeholder="please input description">
+            </div>
+            <div class="form-group">
+                <input type="number" ng-model="product.price" class="form-control" placeholder="please input price">
+            </div>
+            <div class="form-group">
+                <input type="number" ng-model="product.amount" class="form-control" placeholder="please input amount">
+            </div>
+            <div class="form-group">
+                <span class="radio" style="display: inline">
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="0" ng-model="product.status">draft
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="status" value="1" ng-model="product.status">active
+                    </label>
+                </span>
+            </div>
+            <div class="form-group" style="margin-top:15px">
+                <button type="submit" ng-click="add()" class="btn btn-default" data-dismiss="modal">Add</button>
+            </div>
+        </form>
+    </div>                 
+
 </div>
