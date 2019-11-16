@@ -13,3 +13,19 @@
     width: 500px;
     display: none;
 }
+.navbar-shop{
+    position: relative;
+    min-height: 50px;
+    border: 1px solid transparent;
+}
+@media (min-width: 768px)
+.navbar-shop {
+    border-radius: 4px;
+}
+.product_display{
+	margin-bottom: 20px;
+}
+
+.product_button_display{
+	margin-top: 10px;
+}

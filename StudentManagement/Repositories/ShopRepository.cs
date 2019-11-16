@@ -110,6 +110,16 @@ namespace StudentManagement.Repositories
             db.SaveChanges();
         }
 
+        public IEnumerable<Product> GetShopProducts(int shopId, int offset, int limit)
+        {
+            Validator.ValidateOffsetAndLimit(offset, limit);
+            var shop = GetShopById(shopId);
+            var size = shop.Products.Count();
+            Validator.ValidateOffsetAndLimitWithSize(offset, limit, size);
+
+            return shop.Products.Skip(offset).Take(limit);
+        }
+
         public void Delete(int id)
         {
             var shop = GetShopById(id);

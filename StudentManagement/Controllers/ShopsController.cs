@@ -22,6 +22,14 @@ namespace StudentManagement.Controllers
             return shopRepository.GetShops(offset, limit).Select(x => new ShopResult(x));
         }
 
+        [HttpGet("{shopId}/products")]
+        public IEnumerable<ProductResult> GetShopProducts(int shopId, int offset = 0, int limit = 10)
+        {
+            var products = shopRepository.GetShopProducts(shopId, offset, limit);
+
+            return products.Select(x => new ProductResult(x));
+        }
+
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public ShopResult Get(int id)
