@@ -1,40 +1,45 @@
 ﻿<div class="container">
 		<div class="row">
 			<div class="col-sm-12 ">
-				<table class="table">
-					<caption>Shop List</caption>
+				<table class="table table-striped">
+					<caption>
+						<input ng-model="querydata">
+						<button class="btn btn-default btn_line" ng-click="search(querydata)">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</caption>
 					<thread>
 						<tr>
-							<th>Shop Id</th>
-							<th>Name</th>
-							<th>Description</th>
-							<th>Category</th>
-							<th>Status</th>
-							<th>Action</th>
+							<th data-ng-click="predicate = 'id'; reverse=!reverse">Shop Id<i ng-class="{'arrow-down' : reverse, 'arrow-up' : !reverse}"></i></th>
+							<th data-ng-click="predicate = 'name'; reverse=!reverse">Name</th>
+							<th data-ng-click="predicate = 'description'; reverse=!reverse">Description</th>
+							<th data-ng-click="predicate = 'category'; reverse=!reverse">Category</th>
+							<th data-ng-click="predicate = 'status'; reverse=!reverse">Status</th>
+							<th data-ng-click="predicate = 'action'; reverse=!reverse">Action</th>
 						</tr>
 					</thread>
 					<tbody >
-						<tr ng-repeat="shopdata in shopList">
+						<tr ng-repeat="shopdata in shopList | orderBy:predicate:reverse">
 							<td>
 					            {{shopdata.id}}
 					        </td>
-					        <td>
+					        <td class="table_shoplist">
 					            <div ng-hide="editingData[shopdata.id]">{{shopdata.name}}</div>
 					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.name" /></div>
 					        </td>
-					        <td>
+					        <td class="table_shoplist">
 					            <div ng-hide="editingData[shopdata.id]">{{shopdata.description}}</div>
 					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.description" /></div>
 					        </td>
-					        <td>
+					        <td class="table_shoplist">
 					            <div ng-hide="editingData[shopdata.id]">{{shopdata.category}}</div>
 					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.category" /></div>
 					        </td>
-					        <td>
+					        <td class="table_shoplist">
 					            <div ng-hide="editingData[shopdata.id]">{{shopdata.status}}</div>
 					            <div ng-show="editingData[shopdata.id]"><input type="text" ng-model="shopdata.status" /></div>
 					        </td>
-							<td>
+							<td class="table_shoplist">
 								<button class="btn btn-default" style="margin-right:10px;" ng-click="del(shopdata.id)">Delete</button>
 								<button class="btn btn-default" ng-hide="editingData[shopdata.id]" ng-click="modify(shopdata)">Modify</button>
 					            <button class="btn btn-default" ng-show="editingData[shopdata.id]" ng-click="update(shopdata)">Update</button>
@@ -68,7 +73,7 @@
 		                    </span>
 		                </div>
 		                <div class="form-group" style="margin-top:15px">
-		                    <button type="submit" ng-click="add()" class="btn btn-default" data-dismiss="modal">Add</button>
+		                    <button type="submit" ng-click="add()" class="btn btn-default">Add</button>
 		                </div>
 		            </form>
 		        </div>		                       

@@ -4,6 +4,7 @@
 }
 .jumbotron{
 	margin-top: 0px;
+    margin-bottom: 20px;
 }
 .box{
 	padding-left: 10px;
@@ -23,9 +24,38 @@
     border-radius: 4px;
 }
 .product_display{
-	margin-bottom: 20px;
+	margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .product_button_display{
 	margin-top: 10px;
 }
+.btn_line{
+    padding: 3px 13px;
+    height: 26px;
+}
+.table_shoplist{
+    width: 18%;
+    text-align: left;
+}
+th{
+    cursor: pointer;
+}
+/*.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  margin-top: 10px;
+}
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  margin-top: 10px;
+}*/
+
