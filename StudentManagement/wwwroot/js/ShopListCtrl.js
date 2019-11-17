@@ -5,11 +5,22 @@ app.controller("ShopListCtrl", function ($scope, $http, $route) {
 
     $scope.$route = $route;
 
-    $scope.getAllData = function () {
+    function isEmptyOrSpaces(str){
+
+        return str == null || str.match(/^\s*$/) != null;
+    }
+
+    $scope.getAllData = function (query = "") {
+
+        var url = "api/v1/shops"
+        if (!isEmptyOrSpaces(query))
+        {
+            url += "?query=" + query
+        }
 
         $http({
             method: "GET",
-            url: "api/v1/shops"
+            url: url
         }).then(function mySuccess(response) {
 
             $scope.shopList = response.data;
@@ -49,7 +60,7 @@ app.controller("ShopListCtrl", function ($scope, $http, $route) {
 
             console.log(response);
 
-            $scope.getAllData();
+            $scope.getAllData("");
         }, function myError(response) {
 
             console.log(response.statusText);
@@ -100,6 +111,9 @@ app.controller("ShopListCtrl", function ($scope, $http, $route) {
         });
     };
 
+    $scope.search = function(querydata){
+        $scope.getAllData(querydata)
+    };
 
 
 });

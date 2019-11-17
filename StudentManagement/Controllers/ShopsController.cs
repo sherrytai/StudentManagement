@@ -17,9 +17,9 @@ namespace StudentManagement.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public IEnumerable<ShopResult> Get(int offset = 0, int limit = 10)
+        public IEnumerable<ShopResult> Get(string query = null, int offset = 0, int limit = 10)
         {
-            return shopRepository.GetShops(offset, limit).Select(x => new ShopResult(x));
+            return shopRepository.GetShops(query, offset, limit).Select(x => new ShopResult(x));
         }
 
         [HttpGet("{shopId}/products")]

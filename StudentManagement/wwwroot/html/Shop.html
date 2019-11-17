@@ -4,7 +4,14 @@
     <p>Description:{{selectedShop.description}}</p>
     <p>Category:{{selectedShop.category}}</p>
 </div>
+
 <div class="container">
+    <div>
+        <input ng-model="querydatap">
+        <button class="btn btn-default btn_line" ng-click="search(querydatap)">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </div>
     <div class="row" >
         <div class="col-sm-4 product_display" ng-repeat="productdata in products">
             <div class="productImg">img</div>
@@ -71,7 +78,7 @@
                 </span>
             </div>
             <div class="form-group" style="margin-top:15px">
-                <button type="submit" ng-click="add()" class="btn btn-default" data-dismiss="modal">Add</button>
+                <button type="submit" ng-click="add()" class="btn btn-default">Add</button>
             </div>
         </form>
     </div>                 

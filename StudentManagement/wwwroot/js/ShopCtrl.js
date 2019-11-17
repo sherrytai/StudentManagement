@@ -3,6 +3,11 @@
 var app=angular.module("app")
 app.controller("ShopCtrl", function($scope, $http, $route){
 
+    function isEmptyOrSpaces(str){
+
+        return str == null || str.match(/^\s*$/) != null;
+    }
+
     $scope.GetDataById = function(id)
     {
     	var url = "api/v1/shops/" + id 
@@ -21,10 +26,18 @@ app.controller("ShopCtrl", function($scope, $http, $route){
 	        });
 	}
 
-    $scope.getAllData = function () {
+    $scope.getAllData = function (query = "") {
+
+        var url =  "api/v1/shops/"+ $scope.selectedShop.id +"/products"
+
+        if (!isEmptyOrSpaces(query))
+        {
+            url += "?query=" + query
+        }
+
 	    $http({
 		            method : "GET",
-		            url : "api/v1/shops/"+ $scope.selectedShop.id +"/products"
+		            url : url
 		        }).then(function mySuccess(response) {
 
 		            $scope.products = response.data;
@@ -146,4 +159,9 @@ app.controller("ShopCtrl", function($scope, $http, $route){
     }
 
     $scope.Initialize()
+
+    $scope.search = function(querydata){
+        $scope.getAllData(querydata)
+    };
+    
 });

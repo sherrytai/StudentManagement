@@ -50,13 +50,19 @@ namespace StudentManagement.Repositories
             return shop;
         }
 
-        public IEnumerable<Shop> GetShops(int offset, int limit)
+        public IEnumerable<Shop> GetShops(string query, int offset, int limit)
         {
             Validator.ValidateOffsetAndLimit(offset, limit);
-            var size = db.Shops.Count();
+            IEnumerable<Shop> shops = db.Shops;
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                shops = db.Shops.Where(x => x.Name.Contains(query));
+            }
+
+            var size = shops.Count();
             Validator.ValidateOffsetAndLimitWithSize(offset, limit, size);
 
-            return db.Shops.Skip(offset).Take(limit);
+            return shops.Skip(offset).Take(limit);
         }
 
         public bool ContainsByName(string name)
