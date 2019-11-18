@@ -42,7 +42,7 @@ namespace StudentManagement.Controllers
         }
 
         [HttpGet("{accountId}/shops")]
-        public IEnumerable<ShopResult> GetAccountShops(int accountId, int offset=0, int limit=10)
+        public IEnumerable<ShopResult> GetAccountShops(int accountId, int offset = 0, int limit = 10)
         {
             var shops = accountRepository.GetAccountShops(accountId, offset, limit);
 
