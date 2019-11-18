@@ -2,12 +2,12 @@
 		<div class="row">
 			<div class="col-sm-12 ">
 				<table class="table table-striped">
-					<caption>
+					<div class="search_box">
 						<input ng-model="querydata">
 						<button class="btn btn-default btn_line" ng-click="search(querydata)">
 							<span class="glyphicon glyphicon-search"></span>
 						</button>
-					</caption>
+					</div>
 					<thread>
 						<tr>
 							<th data-ng-click="predicate = 'id'; reverse=!reverse">Shop Id<i ng-class="{'arrow-down' : reverse, 'arrow-up' : !reverse}"></i></th>

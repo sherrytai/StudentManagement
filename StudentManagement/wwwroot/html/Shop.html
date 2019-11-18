@@ -17,10 +17,6 @@
             <div class="productImg">img</div>
             <br>
             <div>
-                <div ng-hide="editingData[productdata.id]">Id:{{productdata.id}}</div>
-                <div ng-show="editingData[productdata.id]">Id:<input type="text" ng-model="productdata.id" /></div>
-            </div>
-            <div>
                 <div ng-hide="editingData[productdata.id]">Name:{{productdata.name}}</div>
                 <div ng-show="editingData[productdata.id]">Name:<input type="text" ng-model="productdata.name" /></div>
             </div>
@@ -39,6 +35,10 @@
             <div>
                 <div ng-hide="editingData[productdata.id]">Status:{{productdata.status}}</div>
                 <div ng-show="editingData[productdata.id]">Status:<input type="text" ng-model="productdata.status" /></div>
+            </div>
+            <div>
+                <div ng-hide="editingData[productdata.id]">Id:{{productdata.id}}</div>
+                <div ng-show="editingData[productdata.id]">Id:<input type="text" ng-model="productdata.id" /></div>
             </div>
             <div>
                 <div ng-hide="editingData[productdata.id]">Shop Id:{{productdata.shopId}}</div>

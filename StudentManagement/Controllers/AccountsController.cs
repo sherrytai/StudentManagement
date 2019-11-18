@@ -23,7 +23,12 @@ namespace StudentManagement.Controllers
         [HttpGet]
         public IEnumerable<AccountResult> Get(int offset = 0, int limit = 10)
         {
-            return accountRepository.GetAccounts(offset, limit).Select(x => new AccountResult(x));
+            var a = accountRepository.GetAccounts(offset, limit);
+            var b = a.Select(x => new AccountResult(x));
+            var c = b.ToList();
+            return c;
+
+            //accountRepository.GetAccounts(offset, limit).Select(x=> new AccountResult(x));
         }
 
         // TODO check permission
@@ -46,7 +51,7 @@ namespace StudentManagement.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Post([FromBody]AccountParameter accountParameter)
+        public CreatedResult Post([FromBody]AccountParameter accountParameter)
         {
             var account = accountRepository.Add(accountParameter);
 
@@ -56,9 +61,9 @@ namespace StudentManagement.Controllers
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]AccountParameter account)
+        public void Put(int id, [FromBody]AccountParameter accountParameter)
         {
-            accountRepository.Update(id, account);
+            accountRepository.Update(id, accountParameter);
         }
 
         // DELETE api/<controller>/5

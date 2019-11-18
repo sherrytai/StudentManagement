@@ -27,6 +27,9 @@ namespace StudentManagement.Results
         [JsonProperty(PropertyName = "shopId", Order = 6)]
         public int ShopId { get; set; }
 
+        [JsonProperty(PropertyName = "shopName", Order = 7)]
+        public string ShopName { get; set; }
+
         public ProductResult()
         { }
 
@@ -39,6 +42,7 @@ namespace StudentManagement.Results
             Price = product.Price;
             Amount = product.Amount;
             ShopId = product.ShopId;
+            ShopName = product.Shop.Name;
         }
     }
 }
