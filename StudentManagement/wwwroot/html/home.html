@@ -1,0 +1,18 @@
+﻿<div class="container">
+    <div class="search_box">
+        <input ng-model="query">
+        <button class="btn btn-default btn_line" ng-model="query">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </div>
+    <div class="row" >
+        <div class="col-sm-4 product_display" ng-repeat="productdata in products | filter:query">
+            <div class="productImg">img</div>
+            <h4>{{productdata.name}}</h4>
+            <h4 ><small>description:  {{productdata.description}}</small></h4>
+            <div class="product_shop">shop:  {{productdata.shopName}}</div>
+            <span>price:  <span class="product_price">${{productdata.price}}</span></span>
+            <span class="product_amount">amount:  <span class="product_amount_number">{{productdata.amount}}</span></span>
+
+        </div>
+    </div>

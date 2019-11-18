@@ -14,7 +14,7 @@
     <nav class="navbar-shop navbar-default" role="navigation" style:"margin-bottom:0px"> 
         <div class="container-fluid"> 
             <div class="navbar-header"> 
-                <a class="navbar-brand" href="#!/">Shop</a> 
+                <a class="navbar-brand" href="#!/home">Shop</a> 
             </div> 
             <ul class="nav navbar-nav">
             	<li><a href="#!/shoplist">Shop List</a></li>
@@ -33,6 +33,10 @@
     angular.module('app', ['ngRoute'])
      .config(function ($routeProvider) {
         $routeProvider
+        .when('/home', {
+            templateUrl: 'html/Home.html',
+            controller: 'HomeCtrl'
+        })
         .when('/register', {
             templateUrl: 'html/Register.html',
             controller: 'RegisterCtrl'
@@ -50,17 +54,17 @@
             controller: 'ShopCtrl'
         })
         .otherwise({
-            redirectTo: '/Index' 
+            redirectTo: '/home' 
         });           
     });
   </script>
 
+<script src="js/HomeCtrl.js"></script>
 <script src="js/RegisterCtrl.js"></script>
 <script src="js/LogInCtrl.js"></script>
 <script src="js/ShopListCtrl.js"></script>
 <script src="js/ShopCtrl.js"></script>
 <script src="js/ShopListButton.js"></script>
-
 
 </body>
 </html>

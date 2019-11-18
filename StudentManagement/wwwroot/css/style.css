@@ -4,7 +4,7 @@
 }
 .jumbotron{
 	margin-top: 0px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .box{
 	padding-left: 10px;
@@ -24,8 +24,7 @@
     border-radius: 4px;
 }
 .product_display{
-	margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .product_button_display{
@@ -58,4 +57,41 @@ th{
   border-top: 5px solid black;
   margin-top: 10px;
 }*/
+
+.search_box{
+    margin:20px 0px;
+}
+.product_price{
+    font-size: 15px;
+    font-weight:500;
+}
+.product_amount{
+    float:right;
+}
+.product_amount_number{
+    font-size: 15px;
+    font-weight:500;
+}
+.product_shop{
+    font-size: 14px;
+    font-weight:400;
+    margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
