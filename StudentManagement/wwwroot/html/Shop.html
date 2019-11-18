@@ -6,6 +6,12 @@
 </div>
 
 <div class="container">
+    <div>
+        <input ng-model="querydatap">
+        <button class="btn btn-default btn_line" ng-click="search(querydatap)">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </div>
     <div class="row" >
         <div class="col-sm-4 product_display" ng-repeat="productdata in products">
             <div class="productImg">img</div>
